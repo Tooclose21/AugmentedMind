@@ -46,6 +46,7 @@ import io.github.sceneview.loaders.MaterialLoader
 import io.github.sceneview.loaders.ModelLoader
 import io.github.sceneview.node.CubeNode
 import io.github.sceneview.node.ModelNode
+import io.github.sceneview.node.Node
 import io.github.sceneview.rememberCollisionSystem
 import io.github.sceneview.rememberEngine
 import io.github.sceneview.rememberMaterialLoader
@@ -84,6 +85,12 @@ class MainActivity : ComponentActivity() {
                     var trackingFailureReason by remember {
                         mutableStateOf<TrackingFailureReason?>(null)
                     }
+                    var xValue by remember {
+                        mutableStateOf(0f)
+                    }
+                    var yValue by remember {
+                        mutableStateOf(0f)
+                    }
                     var frame by remember { mutableStateOf<Frame?>(null) }
                     ARScene(
                         modifier = Modifier.fillMaxSize(),
@@ -109,16 +116,18 @@ class MainActivity : ComponentActivity() {
                         },
                         onSessionUpdated = { session, updatedFrame ->
                             frame = updatedFrame
-                            if (counter % 100 == 0) {
-                                Log.d("COUNTER", counter.toString())
-                                Log.d("TT", timeTrigger.toString())
-                            }
+//                            if (counter % 100 == 0) {
+//                                Log.d("COUNTER", counter.toString())
+//                                Log.d("TT", timeTrigger.toString())
+//                            }
                             if (counter >= timeTrigger) {
                                 timeTrigger = generateNumbersInt(800, 1200)
                                 counter = 0
+                                xValue = generateNumbersFloat(100f, 700f)
+                                yValue = generateNumbersFloat(200f, 1200f)
                                 val hitResults = frame?.hitTest(
-                                    generateNumbersFloat(100f, 700f),
-                                    generateNumbersFloat(200f, 1200f)
+                                    xValue,
+                                    yValue
                                 )
                                 hitResults?.firstOrNull {
                                     it.isValid(
@@ -130,7 +139,10 @@ class MainActivity : ComponentActivity() {
                                             engine = engine,
                                             modelLoader = modelLoader,
                                             materialLoader = materialLoader,
-                                            anchor = anchor
+                                            anchor = anchor,
+                                            onLongPress = {
+                                                childNodes.remove(it)
+                                            }
                                         )
                                     }
 
@@ -146,11 +158,28 @@ class MainActivity : ComponentActivity() {
                                             engine = engine,
                                             modelLoader = modelLoader,
                                             materialLoader = materialLoader,
-                                            anchor = anchor
+                                            anchor = anchor,
+                                            onLongPress = {
+                                                childNodes.remove(it)
+                                            }
                                         )
                                     }
                             }
                         },
+
+//                        onGestureListener = rememberOnGestureListener(
+//                            onSingleTapConfirmed = {montionEvent, node ->
+//                                val hitResult = frame?.hitTest(montionEvent.x, montionEvent.y)
+//
+//
+//
+//                                if (node != null) {
+//                                    Log.d("CONTAINS", childNodes.contains(node).toString())
+//                                }
+//                            }
+//
+//                        )
+
 //                        onGestureListener = rememberOnGestureListener(
 //                            onSingleTapConfirmed = {montionEvent, node ->
 //                                if (node == null) {
@@ -196,7 +225,8 @@ class MainActivity : ComponentActivity() {
 
 
     fun createAnchorNode(
-        engine: Engine, modelLoader: ModelLoader, materialLoader: MaterialLoader, anchor: Anchor
+        engine: Engine, modelLoader: ModelLoader, materialLoader: MaterialLoader, anchor: Anchor,
+        onLongPress: (AnchorNode) -> Unit
     ): AnchorNode {
         val anchorNode = AnchorNode(engine = engine, anchor = anchor)
         val modelNode = ModelNode(
@@ -227,7 +257,12 @@ class MainActivity : ComponentActivity() {
                 boundingBoxNode.isVisible = editingTransforms.isNotEmpty()
             }
         }
-
+        modelNode.onLongPress = {
+            //Log.d("HIT", "x: ${it.x}, y: ${it.y}")
+//            anchorNode.detachAnchor()
+//            modelNode.parent = null
+            onLongPress(anchorNode)
+        }
         return anchorNode
     }
 }
