@@ -1,6 +1,7 @@
 package com.example.apptest4
 
 import android.os.Bundle
+import android.util.Log
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
 import androidx.compose.foundation.layout.Box
@@ -25,6 +26,8 @@ import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import com.example.apptest4.helpers.generateNumbersFloat
+import com.example.apptest4.helpers.generateNumbersInt
 import com.example.apptest4.ui.theme.AppTest4Theme
 import com.google.android.filament.Engine
 import com.google.ar.core.Anchor
@@ -50,6 +53,7 @@ import io.github.sceneview.rememberModelLoader
 import io.github.sceneview.rememberNodes
 import io.github.sceneview.rememberOnGestureListener
 import io.github.sceneview.rememberView
+import kotlin.math.log
 
 private const val kModelFile = "models/icebear.glb"
 
@@ -69,9 +73,14 @@ class MainActivity : ComponentActivity() {
                     val childNodes = rememberNodes()
                     val view = rememberView(engine)
                     val collisionSystem = rememberCollisionSystem(view)
+                    var counter by remember {
+                        mutableStateOf(0)
+                    }
 
                     var planeRenderer by remember { mutableStateOf(true) }
-
+                    var timeTrigger by remember {
+                        mutableStateOf(generateNumbersInt(800, 1200))
+                    }
                     var trackingFailureReason by remember {
                         mutableStateOf<TrackingFailureReason?>(null)
                     }
@@ -100,8 +109,36 @@ class MainActivity : ComponentActivity() {
                         },
                         onSessionUpdated = { session, updatedFrame ->
                             frame = updatedFrame
+                            if (counter % 100 == 0) {
+                                Log.d("COUNTER", counter.toString())
+                                Log.d("TT", timeTrigger.toString())
+                            }
+                            if (counter >= timeTrigger) {
+                                timeTrigger = generateNumbersInt(800, 1200)
+                                counter = 0
+                                val hitResults = frame?.hitTest(
+                                    generateNumbersFloat(100f, 700f),
+                                    generateNumbersFloat(200f, 1200f)
+                                )
+                                hitResults?.firstOrNull {
+                                    it.isValid(
+                                        depthPoint = false, point = false
+                                    )
+                                }?.createAnchorOrNull()?.let { anchor ->
+                                        planeRenderer = false
+                                        childNodes += createAnchorNode(
+                                            engine = engine,
+                                            modelLoader = modelLoader,
+                                            materialLoader = materialLoader,
+                                            anchor = anchor
+                                        )
+                                    }
 
-                            if (childNodes.isEmpty()) {
+                            } else if (counter < timeTrigger) {
+                                counter++
+                            }
+
+                            if (childNodes.isEmpty() || counter >= timeTrigger) {
                                 updatedFrame.getUpdatedPlanes()
                                     .firstOrNull { it.type == Plane.Type.HORIZONTAL_UPWARD_FACING }
                                     ?.let { it.createAnchorOrNull(it.centerPose) }?.let { anchor ->
@@ -114,34 +151,34 @@ class MainActivity : ComponentActivity() {
                                     }
                             }
                         },
-                        onGestureListener = rememberOnGestureListener(
-                            onSingleTapConfirmed = {montionEvent, node ->
-                                if (node == null) {
-                                    val hitResults = frame?.hitTest(montionEvent.x, montionEvent.y)
-                                    hitResults?.firstOrNull {
-                                        it.isValid(
-                                            depthPoint = false,
-                                            point = false
-                                        )
-                                    }?.createAnchorOrNull()
-                                        ?.let { anchor ->
-                                            planeRenderer = false
-                                            childNodes+= createAnchorNode(
-                                                engine = engine,
-                                                modelLoader = modelLoader,
-                                                materialLoader = materialLoader,
-                                                anchor = anchor
-                                            )
-                                        }
-                                }
-                            })
-                        )
-                    Text(
-                        modifier = Modifier
-                            .systemBarsPadding()
-                            .fillMaxWidth()
-                            .align(Alignment.TopCenter)
-                            .padding(top = 16.dp, start = 32.dp, end = 32.dp),
+//                        onGestureListener = rememberOnGestureListener(
+//                            onSingleTapConfirmed = {montionEvent, node ->
+//                                if (node == null) {
+//                                    val hitResults = frame?.hitTest(600f, 1000f)
+//                                    Log.d("COORDINATES", "x: ${montionEvent.x}, y: ${montionEvent.y}")
+//                                    hitResults?.firstOrNull {
+//                                        it.isValid(
+//                                            depthPoint = false,
+//                                            point = false
+//                                        )
+//                                    }?.createAnchorOrNull()
+//                                        ?.let { anchor ->
+//                                            planeRenderer = false
+//                                            childNodes+= createAnchorNode(
+//                                                engine = engine,
+//                                                modelLoader = modelLoader,
+//                                                materialLoader = materialLoader,
+//                                                anchor = anchor
+//                                            )
+//                                        }
+//                                }
+//                            })
+                    )
+                    Text(modifier = Modifier
+                        .systemBarsPadding()
+                        .fillMaxWidth()
+                        .align(Alignment.TopCenter)
+                        .padding(top = 16.dp, start = 32.dp, end = 32.dp),
                         textAlign = TextAlign.Center,
                         fontSize = 28.sp,
                         color = Color.White,
@@ -151,49 +188,46 @@ class MainActivity : ComponentActivity() {
                             stringResource(R.string.point_your_phone_down)
                         } else {
                             stringResource(R.string.tap_anywhere_to_add_model)
-                        }
-                    )
+                        })
                 }
             }
         }
     }
 
 
+    fun createAnchorNode(
+        engine: Engine, modelLoader: ModelLoader, materialLoader: MaterialLoader, anchor: Anchor
+    ): AnchorNode {
+        val anchorNode = AnchorNode(engine = engine, anchor = anchor)
+        val modelNode = ModelNode(
+            modelInstance = modelLoader.createModelInstance(kModelFile),
+            // Scale to fit in a 0.5 meters cube
 
-                    fun createAnchorNode(
-                        engine: Engine,
-                        modelLoader: ModelLoader,
-                        materialLoader: MaterialLoader,
-                        anchor: Anchor
-                    ): AnchorNode {
-                        val anchorNode = AnchorNode(engine = engine, anchor = anchor)
-                        val modelNode = ModelNode(
-                            modelInstance = modelLoader.createModelInstance(kModelFile),
-                            // Scale to fit in a 0.5 meters cube
-                            scaleToUnits = 0.5f)
-                            .apply{
-                                // Model Node needs to be editable for independent rotation from the anchor rotation
-                                isEditable = true
-                                editableScaleRange = 0.2f..0.75f
-                        }
-                        val boundingBoxNode = CubeNode(
-                            engine,
-                            size = modelNode.extents,
-                            center = modelNode.center,
-                            materialInstance = materialLoader.createColorInstance(
-                                Color.White.copy(alpha = 0.5f)))
-                                .apply{
-                                    isVisible = false
-                                }
-                        modelNode.addChildNode(boundingBoxNode)
-                        anchorNode.addChildNode(modelNode)
+            scaleToUnits = generateNumbersFloat(0.1f, 0.5f)
+        ).apply {
+                // Model Node needs to be editable for independent rotation from the anchor rotation
+                isEditable = false
+                editableScaleRange = 0.2f..0.75f
+            }
+        val boundingBoxNode = CubeNode(
+            engine,
+            size = modelNode.extents,
+            center = modelNode.center,
+            materialInstance = materialLoader.createColorInstance(
+                Color.White.copy(alpha = 0.5f)
+            )
+        ).apply {
+                isVisible = false
+            }
+        modelNode.addChildNode(boundingBoxNode)
+        anchorNode.addChildNode(modelNode)
 
-                        listOf(modelNode, anchorNode).forEach {
-                            it.onEditingChanged = { editingTransforms ->
-                                boundingBoxNode.isVisible = editingTransforms.isNotEmpty()
-                            }
-                        }
+        listOf(modelNode, anchorNode).forEach {
+            it.onEditingChanged = { editingTransforms ->
+                boundingBoxNode.isVisible = editingTransforms.isNotEmpty()
+            }
+        }
 
-                        return anchorNode
-                    }
-                }
+        return anchorNode
+    }
+}
