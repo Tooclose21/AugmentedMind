@@ -3,4 +3,5 @@
     <string name="point_your_phone_down">Point your phone down</string>
     <string name="tap_anywhere_to_add_model">tap anywhere to add model</string>
     <string name="title_activity_finished_game">FinishedGameActivity</string>
+    <string name="title_activity_choose_game">ChooseGameActivity</string>
 </resources>
