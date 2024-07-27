@@ -1,14 +1,20 @@
 package com.example.apptest4
 
+import android.content.Intent
 import android.os.Bundle
 import android.util.Log
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
+import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
+import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.Row
+import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.systemBarsPadding
+import androidx.compose.material3.Button
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Surface
 import androidx.compose.material3.Text
@@ -92,6 +98,12 @@ class MainActivity : ComponentActivity() {
                         mutableStateOf(0f)
                     }
                     var frame by remember { mutableStateOf<Frame?>(null) }
+                    var gamePoints by remember {
+                        mutableStateOf(0)
+                    }
+                    var maxRender by remember {
+                        mutableStateOf(0)
+                    }
                     ARScene(
                         modifier = Modifier.fillMaxSize(),
                         childNodes = childNodes,
@@ -116,12 +128,8 @@ class MainActivity : ComponentActivity() {
                         },
                         onSessionUpdated = { session, updatedFrame ->
                             frame = updatedFrame
-//                            if (counter % 100 == 0) {
-//                                Log.d("COUNTER", counter.toString())
-//                                Log.d("TT", timeTrigger.toString())
-//                            }
-                            if (counter >= timeTrigger) {
-                                timeTrigger = generateNumbersInt(800, 1200)
+                            if (counter >= timeTrigger && maxRender < 5) {
+                                timeTrigger = generateNumbersInt(200, 500)
                                 counter = 0
                                 xValue = generateNumbersFloat(100f, 700f)
                                 yValue = generateNumbersFloat(200f, 1200f)
@@ -135,12 +143,15 @@ class MainActivity : ComponentActivity() {
                                     )
                                 }?.createAnchorOrNull()?.let { anchor ->
                                         planeRenderer = false
+                                        maxRender++
                                         childNodes += createAnchorNode(
                                             engine = engine,
                                             modelLoader = modelLoader,
                                             materialLoader = materialLoader,
                                             anchor = anchor,
                                             onLongPress = {
+                                                gamePoints++
+                                                maxRender--
                                                 childNodes.remove(it)
                                             }
                                         )
@@ -149,75 +160,49 @@ class MainActivity : ComponentActivity() {
                             } else if (counter < timeTrigger) {
                                 counter++
                             }
-
-                            if (childNodes.isEmpty() || counter >= timeTrigger) {
-                                updatedFrame.getUpdatedPlanes()
-                                    .firstOrNull { it.type == Plane.Type.HORIZONTAL_UPWARD_FACING }
-                                    ?.let { it.createAnchorOrNull(it.centerPose) }?.let { anchor ->
-                                        childNodes += createAnchorNode(
-                                            engine = engine,
-                                            modelLoader = modelLoader,
-                                            materialLoader = materialLoader,
-                                            anchor = anchor,
-                                            onLongPress = {
-                                                childNodes.remove(it)
-                                            }
-                                        )
-                                    }
-                            }
                         },
-
-//                        onGestureListener = rememberOnGestureListener(
-//                            onSingleTapConfirmed = {montionEvent, node ->
-//                                val hitResult = frame?.hitTest(montionEvent.x, montionEvent.y)
-//
-//
-//
-//                                if (node != null) {
-//                                    Log.d("CONTAINS", childNodes.contains(node).toString())
-//                                }
-//                            }
-//
-//                        )
-
-//                        onGestureListener = rememberOnGestureListener(
-//                            onSingleTapConfirmed = {montionEvent, node ->
-//                                if (node == null) {
-//                                    val hitResults = frame?.hitTest(600f, 1000f)
-//                                    Log.d("COORDINATES", "x: ${montionEvent.x}, y: ${montionEvent.y}")
-//                                    hitResults?.firstOrNull {
-//                                        it.isValid(
-//                                            depthPoint = false,
-//                                            point = false
-//                                        )
-//                                    }?.createAnchorOrNull()
-//                                        ?.let { anchor ->
-//                                            planeRenderer = false
-//                                            childNodes+= createAnchorNode(
-//                                                engine = engine,
-//                                                modelLoader = modelLoader,
-//                                                materialLoader = materialLoader,
-//                                                anchor = anchor
-//                                            )
-//                                        }
-//                                }
-//                            })
                     )
-                    Text(modifier = Modifier
+                    Column(modifier = Modifier
                         .systemBarsPadding()
                         .fillMaxWidth()
-                        .align(Alignment.TopCenter)
-                        .padding(top = 16.dp, start = 32.dp, end = 32.dp),
-                        textAlign = TextAlign.Center,
-                        fontSize = 28.sp,
-                        color = Color.White,
-                        text = trackingFailureReason?.let {
-                            it.getDescription(LocalContext.current)
-                        } ?: if (childNodes.isEmpty()) {
-                            stringResource(R.string.point_your_phone_down)
-                        } else {
-                            stringResource(R.string.tap_anywhere_to_add_model)
-                        })
+                        .align(Alignment.TopCenter),
+                        verticalArrangement = Arrangement.spacedBy(40.dp)) {
+                        Row(modifier = Modifier
+                            .systemBarsPadding()
+                            .fillMaxWidth()) {
+                            Button(modifier = Modifier
+                                .systemBarsPadding()
+                                .padding(30.dp),
+                                onClick = { startActivity(Intent(this@MainActivity,
+                                    FinishedGameActivity::class.java)) }) {
+                                Text(fontSize = 20.sp, text = "Finish")
+                            }
+                            Spacer(modifier = Modifier.weight(1f))
+                            Text(
+                                modifier = Modifier
+                                    .systemBarsPadding()
+                                    .padding(32.dp),
+                                textAlign = TextAlign.Right,
+                                fontSize = 28.sp,
+                                color = Color.White,
+                                text = "Points: $gamePoints"
+                            )
+                        }
+                        Text(
+                            modifier = Modifier
+                                .systemBarsPadding()
+                                .fillMaxWidth(),
+                            textAlign = TextAlign.Center,
+                            fontSize = 28.sp,
+                            color = Color.White,
+                            text = trackingFailureReason?.getDescription(LocalContext.current)
+                                ?: if (childNodes.isEmpty()) {
+                                    stringResource(R.string.point_your_phone_down)
+                                } else {
+                                    ""
+                                }
+                        )
+                    }
                 }
             }
         }
@@ -257,11 +242,9 @@ class MainActivity : ComponentActivity() {
                 boundingBoxNode.isVisible = editingTransforms.isNotEmpty()
             }
         }
-        modelNode.onLongPress = {
-            //Log.d("HIT", "x: ${it.x}, y: ${it.y}")
-//            anchorNode.detachAnchor()
-//            modelNode.parent = null
+        modelNode.onSingleTapConfirmed = {
             onLongPress(anchorNode)
+            true
         }
         return anchorNode
     }
