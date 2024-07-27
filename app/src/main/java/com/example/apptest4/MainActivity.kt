@@ -174,7 +174,9 @@ class MainActivity : ComponentActivity() {
                                 .systemBarsPadding()
                                 .padding(30.dp),
                                 onClick = { startActivity(Intent(this@MainActivity,
-                                    FinishedGameActivity::class.java)) }) {
+                                    FinishedGameActivity::class.java).also {
+                                        it.putExtra("gamePoints", gamePoints)
+                                }) }) {
                                 Text(fontSize = 20.sp, text = "Finish")
                             }
                             Spacer(modifier = Modifier.weight(1f))
