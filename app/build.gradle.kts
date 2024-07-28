@@ -1,6 +1,8 @@
 plugins {
     alias(libs.plugins.androidApplication)
     alias(libs.plugins.jetbrainsKotlinAndroid)
+    //id("com.android.application")
+    id("com.google.gms.google-services")
 }
 
 android {
@@ -8,7 +10,7 @@ android {
     compileSdk = 34
 
     defaultConfig {
-        applicationId = "com.example.apptest4"
+        applicationId = "com.example.augmMind"
         minSdk = 30
         targetSdk = 34
         versionCode = 1
@@ -65,6 +67,7 @@ dependencies {
     implementation(libs.androidx.constraintlayout)
     implementation(libs.androidx.navigation.fragment.ktx)
     implementation(libs.androidx.navigation.ui.ktx)
+    implementation(libs.firebase.auth.ktx)
     testImplementation(libs.junit)
     androidTestImplementation(libs.androidx.junit)
     androidTestImplementation(libs.androidx.espresso.core)
@@ -78,4 +81,7 @@ dependencies {
 
     // ARSceneview
     implementation ("io.github.sceneview:arsceneview:2.1.0")
+
+    implementation(platform("com.google.firebase:firebase-bom:33.1.2"))
+    implementation("com.google.firebase:firebase-analytics")
 }

@@ -1,0 +1,29 @@
+{
+  "project_info": {
+    "project_number": "934299959779",
+    "project_id": "augmentedmind-4e2fb",
+    "storage_bucket": "augmentedmind-4e2fb.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:934299959779:android:aac7c0c828c0ca459ca0d6",
+        "android_client_info": {
+          "package_name": "com.example.augmMind"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyAVRfAbdP0ABoRZDuWzu-mCYNWOmVjbxNI"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
