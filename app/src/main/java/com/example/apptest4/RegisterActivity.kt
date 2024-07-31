@@ -110,14 +110,14 @@ class RegisterActivity : ComponentActivity() {
         Column(
             horizontalAlignment = Alignment.CenterHorizontally, modifier = Modifier.padding(10.dp)
         ) {
-            Spacer(modifier = Modifier.weight(2f))
+            Spacer(modifier = Modifier.weight(1f))
             Text(
                 text = "Register",
                 fontWeight = MaterialTheme.typography.titleLarge.fontWeight,
                 fontSize = MaterialTheme.typography.titleLarge.fontSize,
                 fontFamily = MaterialTheme.typography.titleLarge.fontFamily
             )
-            Spacer(modifier = Modifier.weight(3f))
+            Spacer(modifier = Modifier.weight(1f))
             OutlinedTextField(modifier = Modifier.fillMaxWidth(),
                 singleLine = true,
                 label = { Text(text = "Login") },

@@ -93,14 +93,14 @@ class LoginActivity : ComponentActivity() {
             modifier = Modifier
                 .padding(10.dp)
         ) {
-            Spacer(modifier = Modifier.weight(2f))
+            Spacer(modifier = Modifier.weight(1f))
             Text(
                 text = "Login",
                 fontWeight = MaterialTheme.typography.titleLarge.fontWeight,
                 fontSize = MaterialTheme.typography.titleLarge.fontSize,
                 fontFamily = MaterialTheme.typography.titleLarge.fontFamily
             )
-            Spacer(modifier = Modifier.weight(3f))
+            Spacer(modifier = Modifier.weight(2f))
             OutlinedTextField(
                 modifier = Modifier
                     .fillMaxWidth(),
