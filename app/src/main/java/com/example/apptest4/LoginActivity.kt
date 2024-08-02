@@ -50,8 +50,7 @@ class LoginActivity : ComponentActivity() {
         setContent {
             AppTest4Theme {
                 Surface(
-                    modifier = Modifier.fillMaxSize(),
-                    color = MaterialTheme.colorScheme.background
+                    modifier = Modifier.fillMaxSize(), color = MaterialTheme.colorScheme.background
                 ) {
                     Scaffold(
                         topBar = {
@@ -61,24 +60,23 @@ class LoginActivity : ComponentActivity() {
                                         text = "AugmentedMind",
                                         color = MaterialTheme.colorScheme.onSecondary,
                                     )
-                                },
-                                colors = TopAppBarDefaults.topAppBarColors(
+                                }, colors = TopAppBarDefaults.topAppBarColors(
                                     containerColor = MaterialTheme.colorScheme.secondaryContainer
                                 )
                             )
                         },
-                        modifier = Modifier
-                            .background(MaterialTheme.colorScheme.secondaryContainer),
+                        modifier = Modifier.background(MaterialTheme.colorScheme.secondaryContainer),
                     ) {
                         Box(modifier = Modifier.padding(it)) {
                             LoginView()
 
                         }
+                    }
                 }
             }
         }
     }
-}
+
     @Composable
     private fun LoginView() {
         var login by remember {
@@ -89,9 +87,7 @@ class LoginActivity : ComponentActivity() {
             mutableStateOf("")
         }
         Column(
-            horizontalAlignment = Alignment.CenterHorizontally,
-            modifier = Modifier
-                .padding(10.dp)
+            horizontalAlignment = Alignment.CenterHorizontally, modifier = Modifier.padding(10.dp)
         ) {
             Spacer(modifier = Modifier.weight(1f))
             Text(
@@ -101,17 +97,14 @@ class LoginActivity : ComponentActivity() {
                 fontFamily = MaterialTheme.typography.titleLarge.fontFamily
             )
             Spacer(modifier = Modifier.weight(2f))
-            OutlinedTextField(
-                modifier = Modifier
-                    .fillMaxWidth(),
+            OutlinedTextField(modifier = Modifier.fillMaxWidth(),
                 label = { Text(text = "E-Mail") },
                 singleLine = true,
                 value = login,
                 onValueChange = { login = it })
 
             OutlinedTextField(
-                modifier = Modifier
-                    .fillMaxWidth(),
+                modifier = Modifier.fillMaxWidth(),
                 label = { Text(text = "Password") },
                 singleLine = true,
                 value = password,
@@ -120,32 +113,23 @@ class LoginActivity : ComponentActivity() {
                 keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Password)
             )
             Button(onClick = {
-                onLogin(
-                    LoginCredentials(login, password),
-                    onWrongCredentials = {
-                        Toast.makeText(this@LoginActivity, it, Toast.LENGTH_SHORT).show()
-                    },
-                    onValidCredentials = { uid ->
-                        startActivity(
-                            Intent(
-                                this@LoginActivity,
-                                ChooseGameActivity::class.java
-                            ).also {
-                                it.putExtra("uid", uid)
-                            }
-                        )
-                        finish()
-                    }
-                )
+                onLogin(LoginCredentials(login, password), onWrongCredentials = {
+                    Toast.makeText(this@LoginActivity, it, Toast.LENGTH_SHORT).show()
+                }, onValidCredentials = { uid ->
+                    startActivity(Intent(
+                        this@LoginActivity, ChooseGameActivity::class.java
+                    ).also {
+                        it.putExtra("uid", uid)
+                    })
+                    finish()
+                })
             }) {
                 Text(text = "Login")
             }
 
             Spacer(modifier = Modifier.weight(1f))
             Row(
-                modifier = Modifier
-                    .fillMaxWidth(),
-                horizontalArrangement = Arrangement.Center
+                modifier = Modifier.fillMaxWidth(), horizontalArrangement = Arrangement.Center
             ) {
                 Text(
                     text = "Don't have an account?",
@@ -172,6 +156,7 @@ class LoginActivity : ComponentActivity() {
 
         }
     }
+
     private fun onLogin(
         loginCredentials: LoginCredentials,
         onWrongCredentials: (String) -> Unit,

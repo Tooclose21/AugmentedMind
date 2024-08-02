@@ -59,10 +59,10 @@ class CatchTheBear : ComponentActivity() {
         super.onCreate(savedInstanceState)
         setContent {
             AppTest4Theme {
-                // A surface container using the 'background' color from the theme
                 Box(
                     modifier = Modifier.fillMaxSize(),
                 ) {
+                    // rendering utilities
                     val engine = rememberEngine()
                     val modelLoader = rememberModelLoader(engine)
                     val materialLoader = rememberMaterialLoader(engine)
@@ -70,30 +70,40 @@ class CatchTheBear : ComponentActivity() {
                     val childNodes = rememberNodes()
                     val view = rememberView(engine)
                     val collisionSystem = rememberCollisionSystem(view)
-                    var counter by remember {
-                        mutableStateOf(0)
-                    }
-
                     var planeRenderer by remember { mutableStateOf(true) }
-                    var timeTrigger by remember {
-                        mutableStateOf(generateNumbersInt(800, 1200))
-                    }
+                    var frame by remember { mutableStateOf<Frame?>(null) }
+
+                    // debug variables
                     var trackingFailureReason by remember {
                         mutableStateOf<TrackingFailureReason?>(null)
                     }
+
+                    // object rendering conditions
+                    // counter - counts frames, when it's greater than timeTrigger
+                    // object can appear, counter and timeTrigger is reevaluated
+                    var counter by remember {
+                        mutableStateOf(0)
+                    }
+                    var timeTrigger by remember {
+                        mutableStateOf(generateNumbersInt(800, 1200))
+                    }
+                    // max number of objects rendered at the same time
+                    var maxRender by remember {
+                        mutableStateOf(0)
+                    }
+
+                    // coordinates of object appears
                     var xValue by remember {
                         mutableStateOf(0f)
                     }
                     var yValue by remember {
                         mutableStateOf(0f)
                     }
-                    var frame by remember { mutableStateOf<Frame?>(null) }
+
                     var gamePoints by remember {
                         mutableStateOf(0)
                     }
-                    var maxRender by remember {
-                        mutableStateOf(0)
-                    }
+
                     ARScene(
                         modifier = Modifier.fillMaxSize(),
                         childNodes = childNodes,
