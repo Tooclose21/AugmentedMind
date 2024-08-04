@@ -2,6 +2,7 @@ package com.example.apptest4
 
 import android.content.Intent
 import android.os.Bundle
+import android.util.Log
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
 import androidx.compose.foundation.layout.Arrangement
@@ -42,7 +43,11 @@ class ChooseGameActivity : ComponentActivity() {
                             Text(text = "Catch the bear")
                         }
                         Button(onClick =  {
-                            RememberDicesLogic().rollDices(4)
+                            val logic = RememberDicesLogic()
+                            logic.rollDices(4)
+                            logic.assignDicesNames().forEach{
+                                Log.d("DICES", it)
+                            }
                         } ) {
                             Text(text = "Roll dices")
                         }
