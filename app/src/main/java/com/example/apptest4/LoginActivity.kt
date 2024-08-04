@@ -113,16 +113,19 @@ class LoginActivity : ComponentActivity() {
                 keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Password)
             )
             Button(onClick = {
-                onLogin(LoginCredentials(login, password), onWrongCredentials = {
-                    Toast.makeText(this@LoginActivity, it, Toast.LENGTH_SHORT).show()
-                }, onValidCredentials = { uid ->
-                    startActivity(Intent(
-                        this@LoginActivity, ChooseGameActivity::class.java
-                    ).also {
-                        it.putExtra("uid", uid)
-                    })
-                    finish()
-                })
+                startActivity(Intent(
+                    this@LoginActivity, ChooseGameActivity::class.java
+                ))
+//                onLogin(LoginCredentials(login, password), onWrongCredentials = {
+//                    Toast.makeText(this@LoginActivity, it, Toast.LENGTH_SHORT).show()
+//                }, onValidCredentials = { uid ->
+//                    startActivity(Intent(
+//                        this@LoginActivity, ChooseGameActivity::class.java
+//                    ).also {
+//                        it.putExtra("uid", uid)
+//                    })
+//                    finish()
+//                })
             }) {
                 Text(text = "Login")
             }

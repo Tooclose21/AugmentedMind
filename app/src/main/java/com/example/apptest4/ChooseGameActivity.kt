@@ -17,6 +17,7 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.tooling.preview.Preview
+import com.example.apptest4.controllers.RememberDicesLogic
 import com.example.apptest4.ui.theme.AppTest4Theme
 
 class ChooseGameActivity : ComponentActivity() {
@@ -39,6 +40,11 @@ class ChooseGameActivity : ComponentActivity() {
                             CatchTheBear::class.java)
                         ) } ) {
                             Text(text = "Catch the bear")
+                        }
+                        Button(onClick =  {
+                            RememberDicesLogic().rollDices(4)
+                        } ) {
+                            Text(text = "Roll dices")
                         }
                     }
 
