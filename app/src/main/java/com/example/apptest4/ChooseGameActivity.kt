@@ -43,11 +43,10 @@ class ChooseGameActivity : ComponentActivity() {
                             Text(text = "Catch the bear")
                         }
                         Button(onClick =  {
-                            val logic = RememberDicesLogic()
-                            logic.rollDices(4)
-                            logic.assignDicesNames().forEach{
-                                Log.d("DICES", it)
-                            }
+                            startActivity(
+                                Intent(this@ChooseGameActivity,
+                                    RememberDices::class.java)
+                            )
                         } ) {
                             Text(text = "Roll dices")
                         }
