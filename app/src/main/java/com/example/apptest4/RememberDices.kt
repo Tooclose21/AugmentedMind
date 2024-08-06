@@ -130,8 +130,9 @@ class RememberDices : ComponentActivity() {
                             if (generate) {
                                 generate = false
                                 models.forEachIndexed {index, item ->
-                                    xValue = logic.coordinatesList[index].x
-                                    yValue = logic.coordinatesList[index].y
+                                    val position = logic.getPositionAt(index)
+                                    xValue = position.x
+                                    yValue = position.y
                                     val hitResults = frame?.hitTest(
                                         xValue,
                                         yValue
