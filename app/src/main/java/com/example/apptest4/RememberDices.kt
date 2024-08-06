@@ -129,9 +129,9 @@ class RememberDices : ComponentActivity() {
                             frame = updatedFrame
                             if (generate) {
                                 generate = false
-                                models.forEach {
-                                    xValue = generateNumbersFloat(200f, 500f)
-                                    yValue = generateNumbersFloat(400f, 800f)
+                                models.forEachIndexed {index, item ->
+                                    xValue = logic.coordinatesList[index].x
+                                    yValue = logic.coordinatesList[index].y
                                     val hitResults = frame?.hitTest(
                                         xValue,
                                         yValue
@@ -149,7 +149,7 @@ class RememberDices : ComponentActivity() {
                                             anchor = anchor,
                                             onLongPress = {
                                             },
-                                            "models/$it"
+                                            "models/$item"
                                         )
                                     }
                                 }
@@ -224,11 +224,11 @@ class RememberDices : ComponentActivity() {
             modelInstance = modelLoader.createModelInstance(model),
 
             // Scale to fit in a 0.5 meters cube
-            scaleToUnits = 0.3f
+            scaleToUnits = 0.15f
         ).apply {
             // Model Node needs to be editable for independent rotation from the anchor rotation
             isEditable = true
-            editableScaleRange = 0.2f..0.75f
+            //editableScaleRange = 0.2f..0.75f
         }
         val boundingBoxNode = CubeNode(
             engine,
