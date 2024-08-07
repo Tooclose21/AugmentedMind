@@ -2,7 +2,6 @@ package com.example.apptest4
 
 import android.content.Intent
 import android.os.Bundle
-import android.util.Log
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
 import androidx.compose.foundation.layout.Arrangement
@@ -14,11 +13,8 @@ import androidx.compose.material3.Button
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Surface
 import androidx.compose.material3.Text
-import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.tooling.preview.Preview
-import com.example.apptest4.controllers.RememberDicesLogic
 import com.example.apptest4.ui.theme.AppTest4Theme
 
 class ChooseGameActivity : ComponentActivity() {
@@ -30,24 +26,32 @@ class ChooseGameActivity : ComponentActivity() {
                     modifier = Modifier.fillMaxSize(),
                     color = MaterialTheme.colorScheme.background
                 ) {
-                    Column (modifier = Modifier
-                        .systemBarsPadding()
-                        .fillMaxWidth(),
+                    Column(
+                        modifier = Modifier
+                            .systemBarsPadding()
+                            .fillMaxWidth(),
                         verticalArrangement = Arrangement.Center,
-                        horizontalAlignment = Alignment.CenterHorizontally){
+                        horizontalAlignment = Alignment.CenterHorizontally
+                    ) {
                         Text(text = "Hello")
-                        Button(onClick =  { startActivity(
-                            Intent(this@ChooseGameActivity,
-                            CatchTheBear::class.java)
-                        ) } ) {
+                        Button(onClick = {
+                            startActivity(
+                                Intent(
+                                    this@ChooseGameActivity,
+                                    CatchTheBear::class.java
+                                )
+                            )
+                        }) {
                             Text(text = "Catch the bear")
                         }
-                        Button(onClick =  {
+                        Button(onClick = {
                             startActivity(
-                                Intent(this@ChooseGameActivity,
-                                    RememberDices::class.java)
+                                Intent(
+                                    this@ChooseGameActivity,
+                                    DicesChooseNumber::class.java
+                                )
                             )
-                        } ) {
+                        }) {
                             Text(text = "Roll dices")
                         }
                     }

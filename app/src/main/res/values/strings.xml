@@ -52,4 +52,5 @@
     <string name="password_wrong" />
     <string name="password_repeated_pass" />
     <string name="title_activity_remember_dices">RememberDices</string>
+    <string name="title_activity_dices_choose_mode">DicesChooseMode</string>
 </resources>

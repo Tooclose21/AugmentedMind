@@ -129,7 +129,7 @@ class RememberDices : ComponentActivity() {
                             frame = updatedFrame
                             if (generate) {
                                 generate = false
-                                models.forEachIndexed {index, item ->
+                                models.forEachIndexed { index, item ->
                                     val position = logic.getPositionAt(index)
                                     xValue = position.x
                                     yValue = position.y
