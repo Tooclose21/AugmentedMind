@@ -44,7 +44,7 @@ class DicesChooseMode : ComponentActivity() {
                                 RememberDices::class.java
                             ).also {
                                 it.putExtra("dicesNumber", dicesNumber)
-                                    it.putExtra("gameMode", 0)
+                                    it.putExtra("gameMode", 6000)
                             }) }
                         )
                         ImageButton(
@@ -55,7 +55,7 @@ class DicesChooseMode : ComponentActivity() {
                                     RememberDices::class.java
                                 ).also {
                                     it.putExtra("dicesNumber", dicesNumber)
-                                    it.putExtra("gameMode", 1)
+                                    it.putExtra("gameMode", 4000)
                                 }) }
                         )
                         ImageButton(
@@ -66,7 +66,7 @@ class DicesChooseMode : ComponentActivity() {
                                     RememberDices::class.java
                                 ).also {
                                     it.putExtra("dicesNumber", dicesNumber)
-                                    it.putExtra("gameMode", 2)
+                                    it.putExtra("gameMode", 2000)
                                 }) }
                         )
                     }

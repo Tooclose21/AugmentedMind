@@ -2,7 +2,6 @@ package com.example.apptest4
 
 import android.content.Intent
 import android.os.Bundle
-import android.util.Log
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
 import androidx.compose.foundation.layout.Arrangement
@@ -28,8 +27,8 @@ import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import androidx.lifecycle.lifecycleScope
 import com.example.apptest4.controllers.RememberDicesLogic
-import com.example.apptest4.helpers.generateNumbersFloat
 import com.example.apptest4.ui.theme.AppTest4Theme
 import com.google.android.filament.Engine
 import com.google.ar.core.Anchor
@@ -52,11 +51,16 @@ import io.github.sceneview.rememberMaterialLoader
 import io.github.sceneview.rememberModelLoader
 import io.github.sceneview.rememberNodes
 import io.github.sceneview.rememberView
+import kotlinx.coroutines.CoroutineScope
+import kotlinx.coroutines.delay
+import kotlinx.coroutines.launch
 
 class RememberDices : ComponentActivity() {
     private val logic = RememberDicesLogic()
+    private var gameMode = 6000
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
+        gameMode = intent.getIntExtra("gameMode", 6000)
         setContent {
             AppTest4Theme {
                 Box(
@@ -99,12 +103,15 @@ class RememberDices : ComponentActivity() {
                     var generate by remember {
                         mutableStateOf(false)
                     }
+                    var dicesVisible by remember {
+                        mutableStateOf(false)
+                    }
 
                     var models: List<String> by remember {
                         mutableStateOf(listOf())
                     }
-//                    val dicesNumber = intent.getIntExtra("dicesNumber", 2)
-//                    val gameMode = intent.getIntExtra("gameMode", 0)
+                    val dicesNumber = intent.getIntExtra("dicesNumber", 2)
+
                     ARScene(
                         modifier = Modifier.fillMaxSize(),
                         childNodes = childNodes,
@@ -129,7 +136,7 @@ class RememberDices : ComponentActivity() {
                         },
                         onSessionUpdated = { session, updatedFrame ->
                             frame = updatedFrame
-                            if (generate) {
+                            if (generate && !dicesVisible) {
                                 generate = false
                                 models.forEachIndexed { index, item ->
                                     val position = logic.getPositionAt(index)
@@ -145,16 +152,20 @@ class RememberDices : ComponentActivity() {
                                         )
                                     }?.createAnchorOrNull()?.let { anchor ->
                                         planeRenderer = false
+                                        dicesVisible = true
                                         childNodes += createAnchorNode(
                                             engine = engine,
                                             modelLoader = modelLoader,
                                             materialLoader = materialLoader,
                                             anchor = anchor,
-                                            onLongPress = {
+                                            waitAndRemove = {
                                             },
                                             "models/$item"
                                         )
                                     }
+                                }
+                                lifecycleScope.launch {
+                                    waitAndRemove { childNodes.clear() }
                                 }
                             }
                         }
@@ -204,7 +215,7 @@ class RememberDices : ComponentActivity() {
                             .systemBarsPadding()
                             .padding(30.dp),
                             onClick = {
-                                logic.rollDices(2)
+                                logic.rollDices(dicesNumber)
                                 models = logic.assignDicesNames()
                                 generate = true
                             }) {
@@ -217,9 +228,14 @@ class RememberDices : ComponentActivity() {
     }
 
 
-    fun createAnchorNode(
+    private fun CoroutineScope.waitAndRemove (action: () -> Unit) = launch {
+            delay(gameMode.toLong())
+        action()
+    }
+
+    private fun createAnchorNode(
         engine: Engine, modelLoader: ModelLoader, materialLoader: MaterialLoader, anchor: Anchor,
-        onLongPress: (AnchorNode) -> Unit, model: String
+        waitAndRemove: (AnchorNode) -> Unit, model: String
     ): AnchorNode {
         val anchorNode = AnchorNode(engine = engine, anchor = anchor)
         val modelNode = ModelNode(
@@ -251,10 +267,8 @@ class RememberDices : ComponentActivity() {
                 boundingBoxNode.isVisible = editingTransforms.isNotEmpty()
             }
         }
-        modelNode.onSingleTapConfirmed = {
-            onLongPress(anchorNode)
-            true
-        }
+//        waitAndRemove(anchorNode)
+
         return anchorNode
     }
 }

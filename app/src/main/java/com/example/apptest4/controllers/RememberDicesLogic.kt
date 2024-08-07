@@ -21,7 +21,7 @@ class RememberDicesLogic {
             Random.nextInt(0..coordinatesListLength)
         }
             .distinct()
-            .take(2)
+            .take(amount)
             .toList()
     }
 
