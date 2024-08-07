@@ -1,5 +1,6 @@
 package com.example.apptest4
 
+import android.content.Intent
 import android.os.Bundle
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
@@ -23,9 +24,9 @@ import com.example.apptest4.ui.theme.AppTest4Theme
 class DicesChooseMode : ComponentActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
+        val dicesNumber = intent.getIntExtra("dicesNumber", 2)
         setContent {
             AppTest4Theme {
-                // A surface container using the 'background' color from the theme
                 Surface(
                     modifier = Modifier.fillMaxSize(),
                     color = MaterialTheme.colorScheme.background
@@ -37,15 +38,36 @@ class DicesChooseMode : ComponentActivity() {
                     ) {
                         ImageButton(
                             imageResId = R.drawable.slimak,
-                            onClick = { /* TODO: Handle click */ }
+                            onClick = { startActivity(
+                                Intent(
+                                this@DicesChooseMode,
+                                RememberDices::class.java
+                            ).also {
+                                it.putExtra("dicesNumber", dicesNumber)
+                                    it.putExtra("gameMode", 0)
+                            }) }
                         )
                         ImageButton(
-                            imageResId = R.drawable.slimak,
-                            onClick = { /* TODO: Handle click */ }
+                            imageResId = R.drawable.zajac,
+                            onClick = { startActivity(
+                                Intent(
+                                    this@DicesChooseMode,
+                                    RememberDices::class.java
+                                ).also {
+                                    it.putExtra("dicesNumber", dicesNumber)
+                                    it.putExtra("gameMode", 1)
+                                }) }
                         )
                         ImageButton(
-                            imageResId = R.drawable.slimak,
-                            onClick = { /* TODO: Handle click */ }
+                            imageResId = R.drawable.wyscigowka,
+                            onClick = { startActivity(
+                                Intent(
+                                    this@DicesChooseMode,
+                                    RememberDices::class.java
+                                ).also {
+                                    it.putExtra("dicesNumber", dicesNumber)
+                                    it.putExtra("gameMode", 2)
+                                }) }
                         )
                     }
                 }

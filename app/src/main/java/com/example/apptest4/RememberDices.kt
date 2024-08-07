@@ -2,6 +2,7 @@ package com.example.apptest4
 
 import android.content.Intent
 import android.os.Bundle
+import android.util.Log
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
 import androidx.compose.foundation.layout.Arrangement
@@ -102,7 +103,8 @@ class RememberDices : ComponentActivity() {
                     var models: List<String> by remember {
                         mutableStateOf(listOf())
                     }
-
+//                    val dicesNumber = intent.getIntExtra("dicesNumber", 2)
+//                    val gameMode = intent.getIntExtra("gameMode", 0)
                     ARScene(
                         modifier = Modifier.fillMaxSize(),
                         childNodes = childNodes,
