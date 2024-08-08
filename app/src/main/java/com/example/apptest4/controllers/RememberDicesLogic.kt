@@ -12,6 +12,7 @@ class RememberDicesLogic {
         Point(770f, 1474f), Point(875f, 1155f), Point(128f, 1206f),
         Point(725f, 800f), Point(481f, 850f), Point(230f, 1000f)
     )
+    private lateinit var answersList: List<Int>
     private var coordinatesListLength = coordinatesList.size - 1
     private lateinit var positionIndex: List<Int>
 
@@ -34,4 +35,20 @@ class RememberDicesLogic {
     fun getPositionAt(position: Int): Point {
         return coordinatesList[positionIndex[position]]
     }
+
+    fun generateAnswers(): List<Int> {
+        val correctAnswer = randomList.sum()
+        answersList = generateSequence {
+            Random.nextInt(correctAnswer - 2.. correctAnswer + 2)
+        }
+            .distinct()
+            .take(3)
+            .toMutableList()
+        if (!answersList.contains(correctAnswer)) {
+            (answersList as MutableList<Int>).remove(answersList[0])
+            answersList += correctAnswer
+        }
+        return answersList.shuffled()
+    }
+
 }

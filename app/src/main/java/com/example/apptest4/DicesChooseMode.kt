@@ -60,7 +60,8 @@ class DicesChooseMode : ComponentActivity() {
                         )
                         ImageButton(
                             imageResId = R.drawable.wyscigowka,
-                            onClick = { startActivity(
+                            onClick = {
+                                startActivity(
                                 Intent(
                                     this@DicesChooseMode,
                                     RememberDices::class.java
