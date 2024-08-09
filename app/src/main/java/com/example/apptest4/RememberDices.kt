@@ -8,8 +8,6 @@ import androidx.activity.compose.setContent
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
-import androidx.compose.foundation.layout.Row
-import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
@@ -24,7 +22,6 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.platform.LocalContext
-import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
@@ -35,9 +32,11 @@ import com.google.android.filament.Engine
 import com.google.ar.core.Anchor
 import com.google.ar.core.Config
 import com.google.ar.core.Frame
+import com.google.ar.core.Plane
 import com.google.ar.core.TrackingFailureReason
 import io.github.sceneview.ar.ARScene
 import io.github.sceneview.ar.arcore.createAnchorOrNull
+import io.github.sceneview.ar.arcore.getUpdatedPlanes
 import io.github.sceneview.ar.arcore.isValid
 import io.github.sceneview.ar.getDescription
 import io.github.sceneview.ar.node.AnchorNode
@@ -112,6 +111,12 @@ class RememberDices : ComponentActivity() {
                         mutableStateOf(listOf())
                     }
                     val dicesNumber = intent.getIntExtra("dicesNumber", 2)
+                    var showInstruction by remember {
+                        mutableStateOf(true)
+                    }
+                    var showStart by remember {
+                        mutableStateOf(false)
+                    }
 
                     ARScene(
                         modifier = Modifier.fillMaxSize(),
@@ -137,8 +142,18 @@ class RememberDices : ComponentActivity() {
                         },
                         onSessionUpdated = { session, updatedFrame ->
                             frame = updatedFrame
+
+                            if (childNodes.isEmpty()) {
+                                val detectedPlane = updatedFrame.getUpdatedPlanes()
+                                    .firstOrNull { it.type == Plane.Type.HORIZONTAL_UPWARD_FACING }
+                                if (detectedPlane != null) {
+                                    showStart = true
+                                }
+                            }
+
                             if (generate && !dicesVisible) {
                                 generate = false
+                                showStart = false
                                 models.forEachIndexed { index, item ->
                                     val position = logic.getPositionAt(index)
                                     xValue = position.x
@@ -167,6 +182,8 @@ class RememberDices : ComponentActivity() {
                                 }
                                 lifecycleScope.launch {
                                     waitAndRemove { childNodes.clear() }
+                                    showStart = false
+                                    showInstruction = false
                                 }
                             }
                         }
@@ -178,50 +195,55 @@ class RememberDices : ComponentActivity() {
                             .align(Alignment.TopCenter),
                         verticalArrangement = Arrangement.spacedBy(40.dp)
                     ) {
-                        Row(
-                            modifier = Modifier
-                                .systemBarsPadding()
-                                .fillMaxWidth()
-                        ) {
-                            Button(modifier = Modifier
-                                .systemBarsPadding()
-                                .padding(30.dp),
-                                onClick = {
-                                    startActivity(
-                                        Intent(
-                                            this@RememberDices,
-                                            FinishedGameActivity::class.java
-                                        )
-                                    )
-                                }) {
-                                Text(fontSize = 20.sp, text = "Finish")
-                            }
-                        }
-                        Text(
-                            modifier = Modifier
-                                .systemBarsPadding()
-                                .fillMaxWidth(),
-                            textAlign = TextAlign.Center,
-                            fontSize = 28.sp,
-                            color = Color.White,
-                            text = trackingFailureReason?.getDescription(LocalContext.current)
-                                ?: if (childNodes.isEmpty()) {
-                                    stringResource(R.string.point_your_phone_down)
-                                } else {
-                                    ""
-                                }
-                        )
-                        Spacer(modifier = Modifier.weight(1f))
                         Button(modifier = Modifier
                             .systemBarsPadding()
                             .padding(30.dp),
                             onClick = {
-                                logic.rollDices(dicesNumber)
-                                models = logic.assignDicesNames()
-                                generate = true
+                                startActivity(
+                                    Intent(
+                                        this@RememberDices,
+                                        FinishedGameActivity::class.java
+                                    )
+                                )
                             }) {
-                            Text(fontSize = 20.sp, text = "Start")
+                            Text(fontSize = 20.sp, text = "Finish")
                         }
+
+                        Column (modifier = Modifier
+                            .systemBarsPadding()
+                            .fillMaxWidth(),
+                            verticalArrangement = Arrangement.Center,
+                            horizontalAlignment = Alignment.CenterHorizontally) {
+                            if (showInstruction) {
+                            Text(
+                                modifier = Modifier
+                                    .systemBarsPadding()
+                                    .fillMaxWidth(),
+                                textAlign = TextAlign.Center,
+                                fontSize = 28.sp,
+                                color = Color.White,
+                                text = trackingFailureReason?.getDescription(LocalContext.current)
+                                    ?: if (childNodes.isEmpty()) {
+                                        "Point your phone down, \nfacing a surface. " +
+                                                "\nMove around slowly \nand wait for surface dots" +
+                                                " \nto appear"
+                                    } else {
+                                        ""
+                                    }
+                            )
+                        }
+                        if (showStart) {
+                            Button(modifier = Modifier
+                                .systemBarsPadding()
+                                .padding(30.dp),
+                                onClick = {
+                                    logic.rollDices(dicesNumber)
+                                    models = logic.assignDicesNames()
+                                    generate = true
+                                }) {
+                                Text(fontSize = 24.sp, text = "Start")
+                            }
+                        }}
                     }
                 }
             }
@@ -229,8 +251,8 @@ class RememberDices : ComponentActivity() {
     }
 
 
-    private fun CoroutineScope.waitAndRemove (action: () -> Unit) = launch {
-            delay(gameMode.toLong())
+    private fun CoroutineScope.waitAndRemove(action: () -> Unit) = launch {
+        delay(gameMode.toLong())
         action()
     }
 
