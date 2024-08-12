@@ -5,13 +5,18 @@ import android.os.Bundle
 import android.util.Log
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
+import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
+import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.systemBarsPadding
+import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material3.Button
 import androidx.compose.material3.Text
 import androidx.compose.runtime.getValue
@@ -22,6 +27,7 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.platform.LocalContext
+import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
@@ -106,20 +112,35 @@ class RememberDices : ComponentActivity() {
                     var dicesVisible by remember {
                         mutableStateOf(false)
                     }
+                    var isCorrect by remember {
+                        mutableStateOf(false)
+                    }
 
                     var models: List<String> by remember {
                         mutableStateOf(listOf())
                     }
                     val dicesNumber = intent.getIntExtra("dicesNumber", 2)
+                    var answersList: List<Int> by remember {
+                        mutableStateOf(listOf())
+                    }
+
                     var showInstruction by remember {
                         mutableStateOf(true)
                     }
                     var showStart by remember {
                         mutableStateOf(false)
                     }
+                    var showFinishButton by remember {
+                        mutableStateOf(true)
+                    }
+                    var showAnswers by remember {
+                        mutableStateOf(false)
+                    }
+                    var showFinishPanel by remember {
+                        mutableStateOf(false)
+                    }
 
-                    ARScene(
-                        modifier = Modifier.fillMaxSize(),
+                    ARScene(modifier = Modifier.fillMaxSize(),
                         childNodes = childNodes,
                         engine = engine,
                         view = view,
@@ -159,8 +180,7 @@ class RememberDices : ComponentActivity() {
                                     xValue = position.x
                                     yValue = position.y
                                     val hitResults = frame?.hitTest(
-                                        xValue,
-                                        yValue
+                                        xValue, yValue
                                     )
                                     hitResults?.firstOrNull {
                                         it.isValid(
@@ -174,20 +194,22 @@ class RememberDices : ComponentActivity() {
                                             modelLoader = modelLoader,
                                             materialLoader = materialLoader,
                                             anchor = anchor,
-                                            waitAndRemove = {
-                                            },
+                                            waitAndRemove = {},
                                             "models/$item"
                                         )
                                     }
                                 }
                                 lifecycleScope.launch {
-                                    waitAndRemove { childNodes.clear() }
+                                    waitAndRemove {
+                                        childNodes.clear()
+                                        showAnswers = true
+                                    }
+                                    answersList = logic.generateAnswers()
                                     showStart = false
                                     showInstruction = false
                                 }
                             }
-                        }
-                    )
+                        })
                     Column(
                         modifier = Modifier
                             .systemBarsPadding()
@@ -195,55 +217,133 @@ class RememberDices : ComponentActivity() {
                             .align(Alignment.TopCenter),
                         verticalArrangement = Arrangement.spacedBy(40.dp)
                     ) {
-                        Button(modifier = Modifier
-                            .systemBarsPadding()
-                            .padding(30.dp),
-                            onClick = {
+                        if (showFinishButton) {
+                            Button(modifier = Modifier
+                                .systemBarsPadding()
+                                .padding(30.dp), onClick = {
                                 startActivity(
                                     Intent(
-                                        this@RememberDices,
-                                        FinishedGameActivity::class.java
+                                        this@RememberDices, FinishedGameActivity::class.java
                                     )
                                 )
                             }) {
-                            Text(fontSize = 20.sp, text = "Finish")
+                                Text(fontSize = 20.sp, text = "Finish")
+                            }
                         }
 
-                        Column (modifier = Modifier
-                            .systemBarsPadding()
-                            .fillMaxWidth(),
-                            verticalArrangement = Arrangement.Center,
-                            horizontalAlignment = Alignment.CenterHorizontally) {
-                            if (showInstruction) {
-                            Text(
-                                modifier = Modifier
-                                    .systemBarsPadding()
-                                    .fillMaxWidth(),
-                                textAlign = TextAlign.Center,
-                                fontSize = 28.sp,
-                                color = Color.White,
-                                text = trackingFailureReason?.getDescription(LocalContext.current)
-                                    ?: if (childNodes.isEmpty()) {
-                                        "Point your phone down, \nfacing a surface. " +
-                                                "\nMove around slowly \nand wait for surface dots" +
-                                                " \nto appear"
-                                    } else {
-                                        ""
-                                    }
-                            )
-                        }
-                        if (showStart) {
-                            Button(modifier = Modifier
+                        Column(
+                            modifier = Modifier
                                 .systemBarsPadding()
-                                .padding(30.dp),
-                                onClick = {
-                                    logic.rollDices(dicesNumber)
-                                    models = logic.assignDicesNames()
-                                    generate = true
-                                }) {
-                                Text(fontSize = 24.sp, text = "Start")
+                                .fillMaxWidth(),
+                            verticalArrangement = Arrangement.Center,
+                            horizontalAlignment = Alignment.CenterHorizontally
+                        ) {
+                            if (showInstruction) {
+                                Text(
+                                    modifier = Modifier
+                                        .systemBarsPadding()
+                                        .fillMaxWidth(),
+                                    textAlign = TextAlign.Center,
+                                    fontSize = 28.sp,
+                                    color = Color.White,
+                                    text = trackingFailureReason?.getDescription(LocalContext.current)
+                                        ?: if (childNodes.isEmpty()) {
+                                            "Point your phone down, \nfacing a surface. " +
+                                                    "\nMove around slowly \nand wait for surface " +
+                                                    "dots \nto appear"
+                                        } else {
+                                            ""
+                                        }
+                                )
                             }
-                        }}
+                            if (showStart && !showAnswers) {
+                                Button(modifier = Modifier
+                                    .systemBarsPadding()
+                                    .padding(30.dp),
+                                    onClick = {
+                                        logic.rollDices(dicesNumber)
+                                        models = logic.assignDicesNames()
+                                        generate = true
+                                    }) {
+                                    Text(fontSize = 24.sp, text = "Start")
+                                }
+                            }
+
+                        }
+                        if (showAnswers) {
+                            Box(
+                                modifier = Modifier
+                                    .size(300.dp)
+                                    .background(
+                                        color = Color(0x80FFFFFF),
+                                        shape = RoundedCornerShape(16.dp)
+                                    )
+                                    .padding(16.dp),
+                                contentAlignment = Alignment.Center
+
+                            ) {
+                                Column(
+                                    horizontalAlignment = Alignment.CenterHorizontally,
+                                    verticalArrangement = Arrangement.Center,
+                                    modifier = Modifier
+                                        .fillMaxWidth()
+                                        .padding(16.dp)
+                                ) {
+                                    Text(
+                                        text = "The sum of dots is:",
+                                        fontSize = 20.sp,
+                                        fontWeight = FontWeight.Bold,
+                                        color = Color.Black
+                                    )
+                                    Spacer(modifier = Modifier.height(16.dp))
+
+                                    answersList.forEachIndexed { index, answer ->
+                                        Button(
+                                            onClick = {
+                                                isCorrect = logic.isCorrect(answer)
+                                                showAnswers = false
+                                                showFinishPanel = true
+                                            },
+                                            modifier = Modifier.padding(vertical = 4.dp)
+                                        ) {
+                                            Text(answer.toString())
+                                        }
+                                    }
+                                }
+                            }
+                        }
+                        if (showFinishPanel) {
+                            Box(
+                                modifier = Modifier
+                                    .size(300.dp)
+                                    .background(
+                                        color = Color(0x80FFFFFF),
+                                        shape = RoundedCornerShape(16.dp)
+                                    )
+                                    .padding(16.dp),
+                                contentAlignment = Alignment.Center
+                            ) {
+                                Column(
+                                    horizontalAlignment = Alignment.CenterHorizontally,
+                                    verticalArrangement = Arrangement.Center,
+                                    modifier = Modifier
+                                        .fillMaxWidth()
+                                        .padding(16.dp)
+                                ) {
+                                    if (isCorrect) {
+                                        Text(
+                                            text = "Correct",
+                                            fontSize = 20.sp,
+                                        )
+                                    } else {
+                                        Text(
+                                            text = ":(",
+                                            fontSize = 20.sp
+                                        )
+                                    }
+                                }
+                            }
+                        }
                     }
                 }
             }
@@ -257,8 +357,12 @@ class RememberDices : ComponentActivity() {
     }
 
     private fun createAnchorNode(
-        engine: Engine, modelLoader: ModelLoader, materialLoader: MaterialLoader, anchor: Anchor,
-        waitAndRemove: (AnchorNode) -> Unit, model: String
+        engine: Engine,
+        modelLoader: ModelLoader,
+        materialLoader: MaterialLoader,
+        anchor: Anchor,
+        waitAndRemove: (AnchorNode) -> Unit,
+        model: String
     ): AnchorNode {
         val anchorNode = AnchorNode(engine = engine, anchor = anchor)
         val modelNode = ModelNode(

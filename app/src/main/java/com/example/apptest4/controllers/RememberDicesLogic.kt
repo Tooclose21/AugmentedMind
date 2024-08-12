@@ -51,4 +51,8 @@ class RememberDicesLogic {
         return answersList.shuffled()
     }
 
+    fun isCorrect(chosenAnswer: Int): Boolean {
+        return chosenAnswer == randomList.sum()
+    }
+
 }
