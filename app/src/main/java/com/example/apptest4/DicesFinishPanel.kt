@@ -1,17 +1,13 @@
 package com.example.apptest4
-
-
 import android.content.Intent
 import android.os.Bundle
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
-
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
-
 import androidx.compose.material3.Button
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Surface
@@ -20,7 +16,7 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
-import com.example.apptest4.controllers.RememberDicesLogic
+
 import com.example.apptest4.ui.theme.AppTest4Theme
 
 class DicesFinishPanel : ComponentActivity() {
@@ -39,7 +35,9 @@ class DicesFinishPanel : ComponentActivity() {
                     Column(
                         horizontalAlignment = Alignment.CenterHorizontally,
                         verticalArrangement = Arrangement.Center,
-                        modifier = Modifier.fillMaxWidth().padding(16.dp)
+                        modifier = Modifier
+                            .fillMaxWidth()
+                            .padding(16.dp)
                     ) {
                         if (isCorrect) {
                             Text(
@@ -56,20 +54,24 @@ class DicesFinishPanel : ComponentActivity() {
                         }
                         Button(
                             onClick = {
-                                startActivity(
-                                    Intent(
-                                        this@DicesFinishPanel,
-                                        RememberDices::class.java
-                                    ).also {
-                                        it.putExtra("gameMode", gameMode)
-                                        it.putExtra("dicesNumber", dicesNumber)
-                                    })
+                                startActivity(Intent(
+                                    this@DicesFinishPanel, RememberDices::class.java
+                                ).also {
+                                    it.putExtra("gameMode", gameMode)
+                                    it.putExtra("dicesNumber", dicesNumber)
+                                })
                             }, modifier = Modifier.padding(vertical = 4.dp)
                         ) {
                             Text(text = "Play again")
                         }
                         Button(
-                            onClick = {}, modifier = Modifier.padding(vertical = 4.dp)
+                            onClick = {
+                                startActivity(
+                                    Intent(
+                                        this@DicesFinishPanel, ChooseGameActivity::class.java
+                                    )
+                                )
+                            }, modifier = Modifier.padding(vertical = 4.dp)
                         ) {
                             Text(text = "Finish")
                         }

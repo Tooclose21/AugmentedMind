@@ -101,9 +101,6 @@ class RememberDices : ComponentActivity() {
                     var dicesVisible by remember {
                         mutableStateOf(false)
                     }
-//                    var isCorrect by remember {
-//                        mutableStateOf(false)
-//                    }
 
                     var models: List<String> by remember {
                         mutableStateOf(listOf())
@@ -119,13 +116,7 @@ class RememberDices : ComponentActivity() {
                     var showStart by remember {
                         mutableStateOf(false)
                     }
-                    var showFinishButton by remember {
-                        mutableStateOf(true)
-                    }
                     var showAnswers by remember {
-                        mutableStateOf(false)
-                    }
-                    var showFinishPanel by remember {
                         mutableStateOf(false)
                     }
 
@@ -206,19 +197,16 @@ class RememberDices : ComponentActivity() {
                             .align(Alignment.TopCenter),
                         verticalArrangement = Arrangement.spacedBy(40.dp)
                     ) {
-                        if (showFinishButton) {
                             Button(modifier = Modifier
                                 .systemBarsPadding()
                                 .padding(30.dp), onClick = {
                                 startActivity(
                                     Intent(
-                                        this@RememberDices, FinishedGameActivity::class.java
+                                        this@RememberDices, ChooseGameActivity::class.java
                                     )
                                 )
                             }) {
-                                Text(fontSize = 20.sp, text = "Finish")
-                            }
-                        }
+                                Text(fontSize = 20.sp, text = "Finish") }
 
                         Column(
                             modifier = Modifier
@@ -245,7 +233,7 @@ class RememberDices : ComponentActivity() {
                                         }
                                 )
                             }
-                            if (showStart && !showAnswers && !showFinishPanel) {
+                            if (showStart && !showAnswers) {
                                 Button(modifier = Modifier
                                     .systemBarsPadding()
                                     .padding(30.dp),
@@ -257,7 +245,6 @@ class RememberDices : ComponentActivity() {
                                     Text(fontSize = 24.sp, text = "Start")
                                 }
                             }
-
                         }
                         if (showAnswers) {
                             Box(
@@ -300,9 +287,6 @@ class RememberDices : ComponentActivity() {
                                                         it.putExtra("dicesNumber", dicesNumber)
                                                         it.putExtra("correctAnswer", logic.giveCorrectAnswer())
                                                     })
-//                                                isCorrect = logic.isCorrect(answer)
-//                                                showAnswers = false
-//                                                showFinishPanel = true
                                             },
                                             modifier = Modifier.padding(vertical = 4.dp)
                                         ) {
@@ -312,58 +296,6 @@ class RememberDices : ComponentActivity() {
                                 }
                             }
                         }
-//                        if (showFinishPanel) {
-//                            Box(
-//                                modifier = Modifier
-//                                    .size(300.dp)
-//                                    .background(
-//                                        color = Color(0x80FFFFFF),
-//                                        shape = RoundedCornerShape(16.dp)
-//                                    )
-//                                    .align(Alignment.CenterHorizontally)
-//                                    .padding(16.dp),
-//                                contentAlignment = Alignment.Center
-//                            ) {
-//                                Column(
-//                                    horizontalAlignment = Alignment.CenterHorizontally,
-//                                    verticalArrangement = Arrangement.Center,
-//                                    modifier = Modifier
-//                                        .fillMaxWidth()
-//                                        .padding(16.dp)
-//                                ) {
-//                                    if (isCorrect) {
-//                                        Text(
-//                                            text = "Congrats! Your answer was correct",
-//                                            fontSize = 20.sp,
-//                                        )
-//                                    } else {
-//                                        val correctAnswer = logic.giveCorrectAnswer()
-//                                        Text(
-//                                            text = "Not this time",
-//                                            fontSize = 20.sp
-//                                        )
-//                                        Text(
-//                                            text = "Correct answer: $correctAnswer",
-//                                            fontSize = 20.sp
-//                                        )
-//                                    }
-//                                    Button(
-//                                        onClick = {
-//                                        },
-//                                        modifier = Modifier.padding(vertical = 4.dp)
-//                                    ) {
-//                                        Text(text = "Play again")
-//                                    }
-//                                    Button(
-//                                        onClick = {
-//                                        },
-//                                        modifier = Modifier.padding(vertical = 4.dp)
-//                                    ) {
-//                                        Text(text = "Finish")
-//                                    }
-//                                }
-//                            }
-//                       }
                     }
                 }
             }
