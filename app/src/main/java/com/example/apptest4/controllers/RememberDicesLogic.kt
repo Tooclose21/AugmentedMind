@@ -7,6 +7,7 @@ import kotlin.random.nextInt
 
 class RememberDicesLogic {
     private lateinit var randomList: List<Int>
+    // possible coordinates for dices to appear at
     var coordinatesList = listOf(
         Point(560f, 1146f), Point(383f, 1453f),
         Point(770f, 1474f), Point(875f, 1155f), Point(128f, 1206f),
@@ -17,7 +18,7 @@ class RememberDicesLogic {
     private lateinit var positionIndex: List<Int>
 
     fun rollDices(amount: Int) {
-        randomList = List<Int>(amount) { generateNumbersInt(1, 6) }
+        randomList = List(amount) { generateNumbersInt(1, 6) }
         positionIndex = generateSequence {
             Random.nextInt(0..coordinatesListLength)
         }

@@ -1,6 +1,5 @@
 package com.example.apptest4
 
-import android.content.Context
 import android.content.Intent
 import android.os.Bundle
 import androidx.activity.ComponentActivity
@@ -25,7 +24,7 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
-import com.example.apptest4.ui.theme.ui.theme.AppTest4Theme
+import com.example.apptest4.ui.theme.AppTest4Theme
 
 class DicesChooseNumber : ComponentActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -36,13 +35,13 @@ class DicesChooseNumber : ComponentActivity() {
                     modifier = Modifier.fillMaxSize(),
                     color = MaterialTheme.colorScheme.background
                 ) {
-                    DiceChooserScreen(this@DicesChooseNumber)
+                    DiceChooserScreen()
                 }
             }
         }
     }
     @Composable
-    fun DiceChooserScreen(context: Context) {
+    fun DiceChooserScreen() {
         Column(
             modifier = Modifier
                 .fillMaxSize()

@@ -2,7 +2,6 @@ package com.example.apptest4
 
 import android.content.Intent
 import android.os.Bundle
-import android.util.Log
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
 import androidx.compose.foundation.background
@@ -63,10 +62,11 @@ import kotlinx.coroutines.launch
 
 class RememberDices : ComponentActivity() {
     private val logic = RememberDicesLogic()
+    // default time when dices are visible
     private var gameMode = 6000
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        gameMode = intent.getIntExtra("gameMode", 6000)
+        gameMode = intent.getIntExtra("gameMode", gameMode)
         setContent {
             AppTest4Theme {
                 Box(
@@ -95,6 +95,7 @@ class RememberDices : ComponentActivity() {
                         mutableStateOf(0f)
                     }
 
+                    // true if it's possible to generate dices
                     var generate by remember {
                         mutableStateOf(false)
                     }
@@ -102,6 +103,7 @@ class RememberDices : ComponentActivity() {
                         mutableStateOf(false)
                     }
 
+                    // list of .glb dices models
                     var models: List<String> by remember {
                         mutableStateOf(listOf())
                     }
@@ -174,7 +176,6 @@ class RememberDices : ComponentActivity() {
                                             modelLoader = modelLoader,
                                             materialLoader = materialLoader,
                                             anchor = anchor,
-                                            waitAndRemove = {},
                                             "models/$item"
                                         )
                                     }
@@ -303,6 +304,7 @@ class RememberDices : ComponentActivity() {
     }
 
 
+    // function waits given number of seconds and performs an action
     private fun CoroutineScope.waitAndRemove(action: () -> Unit) = launch {
         delay(gameMode.toLong())
         action()
@@ -313,7 +315,6 @@ class RememberDices : ComponentActivity() {
         modelLoader: ModelLoader,
         materialLoader: MaterialLoader,
         anchor: Anchor,
-        waitAndRemove: (AnchorNode) -> Unit,
         model: String
     ): AnchorNode {
         val anchorNode = AnchorNode(engine = engine, anchor = anchor)
@@ -346,7 +347,6 @@ class RememberDices : ComponentActivity() {
                 boundingBoxNode.isVisible = editingTransforms.isNotEmpty()
             }
         }
-//        waitAndRemove(anchorNode)
 
         return anchorNode
     }
