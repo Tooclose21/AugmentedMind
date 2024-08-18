@@ -2,6 +2,8 @@ package com.example.apptest4
 
 import android.content.Intent
 import android.os.Bundle
+import android.util.Log
+import android.widget.Toast
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
 import androidx.compose.foundation.layout.Arrangement
@@ -17,9 +19,16 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.sp
+import androidx.lifecycle.lifecycleScope
+import com.example.apptest4.computation.db.FirebaseStore
+import com.example.apptest4.entity.BearPoints
 import com.example.apptest4.ui.theme.AppTest4Theme
+import kotlinx.coroutines.CoroutineScope
+import kotlinx.coroutines.launch
+import java.util.Calendar
 
 class FinishedGameActivity : ComponentActivity() {
+    private val store = FirebaseStore()
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContent {
@@ -29,6 +38,8 @@ class FinishedGameActivity : ComponentActivity() {
                     color = MaterialTheme.colorScheme.background
                 ) {
                     val gamePoints = intent.getIntExtra("gamePoints", 0)
+                    lifecycleScope.save(gamePoints, { Log.e("ERROR", it)}, {Toast.makeText(this, "points saved",
+                        Toast.LENGTH_LONG).show()})
                     GameFinished(gamePoints)
                 }
             }
@@ -62,6 +73,11 @@ class FinishedGameActivity : ComponentActivity() {
                 Text(fontSize = 20.sp, text = "Return")
             }
         }
+    }
+
+    private fun CoroutineScope.save(gamePoints: Int, onError: (String) -> Unit, onSuccess: () -> Unit) = launch {
+        store.addBearPoints("test", BearPoints(score = gamePoints, date = Calendar.getInstance().timeInMillis),
+            onSuccess, onError)
     }
 }
 
