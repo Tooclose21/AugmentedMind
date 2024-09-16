@@ -121,7 +121,7 @@ class LoginActivity : ComponentActivity() {
                 keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Password)
             )
             Spacer(modifier = Modifier.weight(0.3f))
-            Button( colors = ButtonDefaults.buttonColors(containerColor = GreenHighlight),
+            Button( colors = ButtonDefaults.buttonColors(containerColor = DarkGreen),
                 onClick = {
                 startActivity(Intent(
                     this@LoginActivity, ChooseGameActivity::class.java

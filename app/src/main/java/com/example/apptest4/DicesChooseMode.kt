@@ -11,15 +11,20 @@ import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
+import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Surface
+import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.draw.clip
 import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.unit.dp
 import com.example.apptest4.ui.theme.AppTest4Theme
+import com.example.apptest4.ui.theme.DarkGreen
 
 class DicesChooseMode : ComponentActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -32,43 +37,34 @@ class DicesChooseMode : ComponentActivity() {
                     color = MaterialTheme.colorScheme.background
                 ) {
                     Column(
-                        modifier = Modifier.fillMaxSize(),
+                        modifier = Modifier.fillMaxSize().padding(40.dp),
                         verticalArrangement = Arrangement.SpaceEvenly,
                         horizontalAlignment = Alignment.CenterHorizontally
                     ) {
+                        Text(
+                            text = "Choose game mode",
+                            style = MaterialTheme.typography.displayLarge,
+                            color = DarkGreen
+                        )
+                        fun startRememberDicesActivity(dicesNumber: Int, gameMode: Int) {
+                            val intent = Intent(this@DicesChooseMode, RememberDices::class.java).apply {
+                                putExtra("dicesNumber", dicesNumber)
+                                putExtra("gameMode", gameMode)
+                            }
+                            startActivity(intent)
+                        }
+
                         ImageButton(
                             imageResId = R.drawable.slimak,
-                            onClick = { startActivity(
-                                Intent(
-                                this@DicesChooseMode,
-                                RememberDices::class.java
-                            ).also {
-                                it.putExtra("dicesNumber", dicesNumber)
-                                    it.putExtra("gameMode", 6000)
-                            }) }
+                            onClick = { startRememberDicesActivity(dicesNumber, 6000) }
                         )
                         ImageButton(
                             imageResId = R.drawable.zajac,
-                            onClick = { startActivity(
-                                Intent(
-                                    this@DicesChooseMode,
-                                    RememberDices::class.java
-                                ).also {
-                                    it.putExtra("dicesNumber", dicesNumber)
-                                    it.putExtra("gameMode", 4000)
-                                }) }
+                            onClick = { startRememberDicesActivity(dicesNumber, 4000) }
                         )
                         ImageButton(
                             imageResId = R.drawable.wyscigowka,
-                            onClick = {
-                                startActivity(
-                                Intent(
-                                    this@DicesChooseMode,
-                                    RememberDices::class.java
-                                ).also {
-                                    it.putExtra("dicesNumber", dicesNumber)
-                                    it.putExtra("gameMode", 2000)
-                                }) }
+                            onClick = { startRememberDicesActivity(dicesNumber, 2000) }
                         )
                     }
                 }
@@ -86,6 +82,7 @@ class DicesChooseMode : ComponentActivity() {
                 .fillMaxWidth()
                 .height(150.dp)
                 .clickable(onClick = onClick)
+                .clip(RoundedCornerShape(16.dp))
         )
     }
 }

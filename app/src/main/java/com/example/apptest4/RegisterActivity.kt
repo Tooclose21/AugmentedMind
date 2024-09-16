@@ -16,6 +16,7 @@ import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.text.KeyboardOptions
 import androidx.compose.material3.Button
+import androidx.compose.material3.ButtonDefaults
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.OutlinedTextField
@@ -42,6 +43,11 @@ import com.example.apptest4.controllers.AuthController
 import com.example.apptest4.controllers.CredentialsValidator
 import com.example.apptest4.entity.RegisterCredentials
 import com.example.apptest4.ui.theme.AppTest4Theme
+import com.example.apptest4.ui.theme.DarkGreen
+import com.example.apptest4.ui.theme.DarkGrey
+import com.example.apptest4.ui.theme.GreenHighlight
+import com.example.apptest4.ui.theme.LightBack
+import com.example.apptest4.ui.theme.Orange
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.launch
 
@@ -67,14 +73,12 @@ class RegisterActivity : ComponentActivity() {
                         TopAppBar(
                             title = {
                                 Text(
-                                    text = "HealthEndar",
-                                    fontFamily = MaterialTheme.typography.titleLarge.fontFamily,
-                                    fontWeight = MaterialTheme.typography.titleLarge.fontWeight,
-                                    fontSize = MaterialTheme.typography.titleLarge.fontSize,
-                                    color = MaterialTheme.colorScheme.onSecondary,
+                                    style = MaterialTheme.typography.displayMedium,
+                                    text = "AugmentedMind",
+                                    color = Orange,
                                 )
                             }, colors = TopAppBarDefaults.topAppBarColors(
-                                containerColor = MaterialTheme.colorScheme.secondaryContainer
+                                containerColor = LightBack
                             )
                         )
                     },
@@ -113,26 +117,28 @@ class RegisterActivity : ComponentActivity() {
             Spacer(modifier = Modifier.weight(1f))
             Text(
                 text = "Register",
-                fontWeight = MaterialTheme.typography.titleLarge.fontWeight,
-                fontSize = MaterialTheme.typography.titleLarge.fontSize,
-                fontFamily = MaterialTheme.typography.titleLarge.fontFamily
+                style = MaterialTheme.typography.displayLarge,
+                color = DarkGreen
             )
             Spacer(modifier = Modifier.weight(1f))
             OutlinedTextField(modifier = Modifier.fillMaxWidth(),
+                textStyle = MaterialTheme.typography.titleLarge,
                 singleLine = true,
-                label = { Text(text = "Login") },
+                label = { Text(text = "Login", style = MaterialTheme.typography.titleLarge) },
                 value = username,
                 onValueChange = { username = it })
 
             OutlinedTextField(modifier = Modifier.fillMaxWidth(),
+                textStyle = MaterialTheme.typography.titleLarge,
                 singleLine = true,
-                label = { Text(text = "Email") },
+                label = { Text(text = "Email", style = MaterialTheme.typography.titleLarge) },
                 value = email,
                 onValueChange = { email = it })
 
             OutlinedTextField(
                 modifier = Modifier.fillMaxWidth(),
-                label = { Text(text = "Password") },
+                textStyle = MaterialTheme.typography.titleLarge,
+                label = { Text(text = "Password", style = MaterialTheme.typography.titleLarge) },
                 singleLine = true,
                 visualTransformation = PasswordVisualTransformation(),
                 value = password,
@@ -141,14 +147,17 @@ class RegisterActivity : ComponentActivity() {
             )
             OutlinedTextField(
                 modifier = Modifier.fillMaxWidth(),
+                textStyle = MaterialTheme.typography.titleLarge,
                 visualTransformation = PasswordVisualTransformation(),
                 singleLine = true,
-                label = { Text(text = "Repeat password") },
+                label = { Text(text = "Repeat password", style = MaterialTheme.typography.titleLarge) },
                 value = repeatPassword,
                 onValueChange = { repeatPassword = it },
                 keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Password)
             )
-            Button(onClick = {
+            Spacer(modifier = Modifier.weight(0.3f))
+            Button(colors = ButtonDefaults.buttonColors(containerColor = DarkGreen),
+                onClick = {
                 onRegister(RegisterCredentials(
                     username.trim { it <= ' ' },
                     email.trim { it <= ' ' },
@@ -165,7 +174,7 @@ class RegisterActivity : ComponentActivity() {
                     finish()
                 })
             }) {
-                Text(text = "Register")
+                Text(text = "Register", style = MaterialTheme.typography.titleLarge)
             }
 
             Spacer(modifier = Modifier.weight(1f))
@@ -173,17 +182,14 @@ class RegisterActivity : ComponentActivity() {
                 modifier = Modifier.fillMaxWidth(), horizontalArrangement = Arrangement.Center
             ) {
                 Text(
-                    text = "Have an account?",
-                    fontWeight = MaterialTheme.typography.labelLarge.fontWeight,
-                    fontSize = MaterialTheme.typography.labelLarge.fontSize,
-                    fontFamily = MaterialTheme.typography.labelLarge.fontFamily,
+                    text = "Already have an account?",
+                    style = MaterialTheme.typography.headlineLarge,
+                    color = DarkGrey
                 )
 
-                Text(text = "Login",
-                    color = Color.Blue,
-                    fontWeight = MaterialTheme.typography.labelLarge.fontWeight,
-                    fontSize = MaterialTheme.typography.labelLarge.fontSize,
-                    fontFamily = MaterialTheme.typography.labelLarge.fontFamily,
+                Text(text = " Login",
+                    color = Orange,
+                    style = MaterialTheme.typography.headlineLarge,
                     modifier = Modifier.clickable {
                         startActivity(
                             Intent(

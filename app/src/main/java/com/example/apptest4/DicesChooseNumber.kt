@@ -7,8 +7,10 @@ import androidx.activity.compose.setContent
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
+import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
+import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.shape.RoundedCornerShape
@@ -25,6 +27,8 @@ import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import com.example.apptest4.ui.theme.AppTest4Theme
+import com.example.apptest4.ui.theme.DarkGreen
+import com.example.apptest4.ui.theme.GreenHighlight
 
 class DicesChooseNumber : ComponentActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -51,11 +55,11 @@ class DicesChooseNumber : ComponentActivity() {
         ) {
             Text(
                 text = "Choose dices number",
-                style = MaterialTheme.typography.titleLarge,
-                fontSize = 24.sp,
-                textAlign = TextAlign.Center,
+                style = MaterialTheme.typography.displayLarge,
+                color = DarkGreen,
                 modifier = Modifier
             )
+            Spacer(modifier = Modifier.height(42.dp))
             DiceButtonsGrid()
         }
     }
@@ -64,13 +68,13 @@ class DicesChooseNumber : ComponentActivity() {
     fun DiceButtonsGrid() {
         Row(
             modifier = Modifier.fillMaxWidth(),
-            horizontalArrangement = Arrangement.SpaceEvenly
+            horizontalArrangement = Arrangement.SpaceEvenly,
         ) {
             DiceButton(2)
             DiceButton(3)
             DiceButton(4)
         }
-
+        Spacer(modifier = Modifier.height(16.dp))
         Row(
             modifier = Modifier.fillMaxWidth(),
             horizontalArrangement = Arrangement.SpaceEvenly
@@ -90,15 +94,15 @@ class DicesChooseNumber : ComponentActivity() {
                 it.putExtra("dicesNumber", number)
             })},
             shape = RoundedCornerShape(8.dp),
-            colors = ButtonDefaults.buttonColors(containerColor = Color.LightGray),
+            colors = ButtonDefaults.buttonColors(containerColor = GreenHighlight),
             modifier = Modifier
                 .size(100.dp)
                 .padding(8.dp)
         ) {
             Text(
                 text = number.toString(),
-                fontSize = 24.sp,
-                color = Color.Black
+                style = MaterialTheme.typography.displayMedium,
+                color = Color.White
             )
         }
     }

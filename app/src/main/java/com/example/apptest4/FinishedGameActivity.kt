@@ -8,8 +8,10 @@ import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
+import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.systemBarsPadding
 import androidx.compose.material3.Button
 import androidx.compose.material3.MaterialTheme
@@ -18,11 +20,13 @@ import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.lifecycle.lifecycleScope
 import com.example.apptest4.computation.db.FirebaseStore
 import com.example.apptest4.entity.BearPoints
 import com.example.apptest4.ui.theme.AppTest4Theme
+import com.example.apptest4.ui.theme.Orange
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.launch
 import java.util.Calendar
@@ -53,24 +57,29 @@ class FinishedGameActivity : ComponentActivity() {
             verticalArrangement = Arrangement.Center,
             horizontalAlignment = Alignment.CenterHorizontally) {
             Text(
-                text = "Needed a break?",
+                text = "Good job!",
+                style = MaterialTheme.typography.displayMedium,
                 modifier = modifier
             )
             Text(
                 text = "Your streak:",
+                style = MaterialTheme.typography.displayMedium,
                 modifier = modifier
             )
             Text(
                 text = "$gamePoints",
-                modifier = modifier
+                style = MaterialTheme.typography.displayLarge,
+                modifier = modifier,
+                color = Orange
             )
             Button(onClick = { startActivity(Intent(this@FinishedGameActivity,
                 CatchTheBear::class.java)) }) {
-                Text(fontSize = 20.sp, text = "Play again")
+                Text(text = "Play again", style = MaterialTheme.typography.displaySmall,)
             }
+            Spacer(modifier = Modifier.height(16.dp))
             Button(onClick = { startActivity(Intent(this@FinishedGameActivity,
                 ChooseGameActivity::class.java)) }) {
-                Text(fontSize = 20.sp, text = "Return")
+                Text(style = MaterialTheme.typography.displaySmall, text = "Return")
             }
         }
     }

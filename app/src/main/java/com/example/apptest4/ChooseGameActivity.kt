@@ -61,40 +61,52 @@ class ChooseGameActivity : ComponentActivity() {
             label = "More",
             selectedIcon = R.drawable.baseline_person_24,
             unselectedIcon = R.drawable.outline_person_24,
-            ),
+        ),
     )
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContent {
             AppTest4Theme {
                 val navController = rememberNavController()
-                
+
                 var selectedIndex by rememberSaveable {
                     mutableIntStateOf(0)
                 }
                 Scaffold(
                     modifier = Modifier.fillMaxSize(),
                     bottomBar = {
-                        NavigationBar (modifier = Modifier.background(YellowHighlight)) {
-                            bottomNavItems.fastForEachIndexed {index, item -> 
+                        NavigationBar(modifier = Modifier.background(YellowHighlight)) {
+                            bottomNavItems.fastForEachIndexed { index, item ->
                                 NavigationBarItem(
                                     selected = index == selectedIndex,
-                                    onClick = { selectedIndex = index
-                                              navController.navigate(item.destination)},
-                                    icon = { Icon(tint = DarkGrey, painter = painterResource(id = if (selectedIndex == index)
-                                    item.selectedIcon else item.unselectedIcon), contentDescription = item.label) },
-                                    label = { Text(text = item.label, color = DarkGrey) },)
+                                    onClick = {
+                                        selectedIndex = index
+                                        navController.navigate(item.destination)
+                                    },
+                                    icon = {
+                                        Icon(
+                                            tint = DarkGrey, painter = painterResource(
+                                                id = if (selectedIndex == index)
+                                                    item.selectedIcon else item.unselectedIcon
+                                            ), contentDescription = item.label
+                                        )
+                                    },
+                                    label = { Text(text = item.label, color = DarkGrey) },
+                                )
                             }
                         }
                     }
                 ) {
-                    Box(modifier = Modifier
-                        .padding(it)
-                        .fillMaxSize()){
+                    Box(
+                        modifier = Modifier
+                            .padding(it)
+                            .fillMaxSize()
+                    ) {
                         NavHost(navController = navController, startDestination = Exercise) {
                             composable<Exercise> { GamesFragment() }
-                            composable<Stats> { Text(text = "Statistics") }
-                            composable<More> { Text(text = "More") }
+                            composable<Stats> { Statistics() }
+                            composable<More> { SettingsActivity() }
                         }
                     }
                 }
