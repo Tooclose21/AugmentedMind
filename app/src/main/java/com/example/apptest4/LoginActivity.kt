@@ -17,6 +17,7 @@ import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.text.KeyboardOptions
 import androidx.compose.material3.Button
+import androidx.compose.material3.ButtonDefaults
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.OutlinedTextField
@@ -40,6 +41,11 @@ import com.example.apptest4.computation.FirebaseAuthService
 import com.example.apptest4.controllers.AuthController
 import com.example.apptest4.entity.LoginCredentials
 import com.example.apptest4.ui.theme.AppTest4Theme
+import com.example.apptest4.ui.theme.DarkGreen
+import com.example.apptest4.ui.theme.DarkGrey
+import com.example.apptest4.ui.theme.GreenHighlight
+import com.example.apptest4.ui.theme.LightBack
+import com.example.apptest4.ui.theme.Orange
 
 class LoginActivity : ComponentActivity() {
     private val authController = AuthController(FirebaseAuthService())
@@ -57,11 +63,12 @@ class LoginActivity : ComponentActivity() {
                             TopAppBar(
                                 title = {
                                     Text(
+                                        style = MaterialTheme.typography.displayMedium,
                                         text = "AugmentedMind",
-                                        color = MaterialTheme.colorScheme.onSecondary,
+                                        color = Orange,
                                     )
                                 }, colors = TopAppBarDefaults.topAppBarColors(
-                                    containerColor = MaterialTheme.colorScheme.secondaryContainer
+                                    containerColor = LightBack
                                 )
                             )
                         },
@@ -89,30 +96,33 @@ class LoginActivity : ComponentActivity() {
         Column(
             horizontalAlignment = Alignment.CenterHorizontally, modifier = Modifier.padding(10.dp)
         ) {
-            Spacer(modifier = Modifier.weight(1f))
-            Text(
-                text = "Login",
-                fontWeight = MaterialTheme.typography.titleLarge.fontWeight,
-                fontSize = MaterialTheme.typography.titleLarge.fontSize,
-                fontFamily = MaterialTheme.typography.titleLarge.fontFamily
-            )
             Spacer(modifier = Modifier.weight(2f))
+            Text(
+                text = "Log in",
+                style = MaterialTheme.typography.displayLarge,
+                color = DarkGreen
+            )
+            Spacer(modifier = Modifier.weight(0.5f))
             OutlinedTextField(modifier = Modifier.fillMaxWidth(),
-                label = { Text(text = "E-Mail") },
+                label = { Text(text = "E-Mail", style = MaterialTheme.typography.titleLarge) },
                 singleLine = true,
+                textStyle = MaterialTheme.typography.titleLarge,
                 value = login,
                 onValueChange = { login = it })
 
             OutlinedTextField(
                 modifier = Modifier.fillMaxWidth(),
-                label = { Text(text = "Password") },
+                label = { Text(text = "Password", style = MaterialTheme.typography.titleLarge) },
                 singleLine = true,
+                textStyle = MaterialTheme.typography.titleLarge,
                 value = password,
                 visualTransformation = PasswordVisualTransformation(),
                 onValueChange = { password = it },
                 keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Password)
             )
-            Button(onClick = {
+            Spacer(modifier = Modifier.weight(0.3f))
+            Button( colors = ButtonDefaults.buttonColors(containerColor = GreenHighlight),
+                onClick = {
                 startActivity(Intent(
                     this@LoginActivity, ChooseGameActivity::class.java
                 ))
@@ -127,7 +137,7 @@ class LoginActivity : ComponentActivity() {
 //                    finish()
 //                })
             }) {
-                Text(text = "Login")
+                Text(text = "Login", style = MaterialTheme.typography.titleLarge)
             }
 
             Spacer(modifier = Modifier.weight(1f))
@@ -136,16 +146,13 @@ class LoginActivity : ComponentActivity() {
             ) {
                 Text(
                     text = "Don't have an account?",
-                    fontWeight = MaterialTheme.typography.labelLarge.fontWeight,
-                    fontSize = MaterialTheme.typography.labelLarge.fontSize,
-                    fontFamily = MaterialTheme.typography.labelLarge.fontFamily,
+                    style = MaterialTheme.typography.headlineLarge,
+                    color = DarkGrey
                 )
 
-                Text(text = "Register",
-                    color = Color.Blue,
-                    fontWeight = MaterialTheme.typography.labelLarge.fontWeight,
-                    fontSize = MaterialTheme.typography.labelLarge.fontSize,
-                    fontFamily = MaterialTheme.typography.labelLarge.fontFamily,
+                Text(text = " Register",
+                    color = Orange,
+                    style = MaterialTheme.typography.headlineLarge,
                     modifier = Modifier.clickable {
                         startActivity(
                             Intent(

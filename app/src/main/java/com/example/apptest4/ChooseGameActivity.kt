@@ -4,6 +4,7 @@ import android.content.Intent
 import android.os.Bundle
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
+import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
@@ -38,6 +39,8 @@ import com.example.apptest4.helpers.More
 import com.example.apptest4.helpers.NavbarItem
 import com.example.apptest4.helpers.Stats
 import com.example.apptest4.ui.theme.AppTest4Theme
+import com.example.apptest4.ui.theme.DarkGrey
+import com.example.apptest4.ui.theme.YellowHighlight
 
 class ChooseGameActivity : ComponentActivity() {
     private val bottomNavItems = listOf(
@@ -72,15 +75,15 @@ class ChooseGameActivity : ComponentActivity() {
                 Scaffold(
                     modifier = Modifier.fillMaxSize(),
                     bottomBar = {
-                        NavigationBar {
+                        NavigationBar (modifier = Modifier.background(YellowHighlight)) {
                             bottomNavItems.fastForEachIndexed {index, item -> 
                                 NavigationBarItem(
                                     selected = index == selectedIndex,
                                     onClick = { selectedIndex = index
                                               navController.navigate(item.destination)},
-                                    icon = { Icon(painter = painterResource(id = if (selectedIndex == index)
+                                    icon = { Icon(tint = DarkGrey, painter = painterResource(id = if (selectedIndex == index)
                                     item.selectedIcon else item.unselectedIcon), contentDescription = item.label) },
-                                    label = { Text(text = item.label) },)
+                                    label = { Text(text = item.label, color = DarkGrey) },)
                             }
                         }
                     }

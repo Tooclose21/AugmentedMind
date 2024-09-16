@@ -20,6 +20,7 @@ navigationCompose = "2.7.7"
 #noinspection GradleDependency
 composeNavigation = "2.8.0-alpha08"
 serialization = "1.6.3"
+uiTextGoogleFonts = "1.7.1"
 
 [libraries]
 androidx-core-ktx = { group = "androidx.core", name = "core-ktx", version.ref = "coreKtx" }
@@ -47,6 +48,7 @@ firebase-firestore = { group = "com.google.firebase", name = "firebase-firestore
 
 navigation-compose = { module = "androidx.navigation:navigation-compose", version.ref = "composeNavigation" }
 kotlinx-serialization-json = { module = "org.jetbrains.kotlinx:kotlinx-serialization-json", version.ref = "serialization"}
+androidx-ui-text-google-fonts = { group = "androidx.compose.ui", name = "ui-text-google-fonts", version.ref = "uiTextGoogleFonts" }
 
 [plugins]
 androidApplication = { id = "com.android.application", version.ref = "agp" }

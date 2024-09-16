@@ -72,6 +72,7 @@ dependencies {
     implementation(libs.firebase.firestore)
     implementation(libs.kotlinx.serialization.json)
     implementation(libs.navigation.compose)
+    implementation(libs.androidx.ui.text.google.fonts)
     testImplementation(libs.junit)
     androidTestImplementation(libs.androidx.junit)
     androidTestImplementation(libs.androidx.espresso.core)
