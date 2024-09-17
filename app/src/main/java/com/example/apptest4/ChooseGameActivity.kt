@@ -92,7 +92,8 @@ class ChooseGameActivity : ComponentActivity() {
                                             ), contentDescription = item.label
                                         )
                                     },
-                                    label = { Text(text = item.label, color = DarkGrey) },
+                                    label = { Text(text = item.label, color = DarkGrey, style =
+                                    MaterialTheme.typography.titleLarge) },
                                 )
                             }
                         }
@@ -106,7 +107,9 @@ class ChooseGameActivity : ComponentActivity() {
                         NavHost(navController = navController, startDestination = Exercise) {
                             composable<Exercise> { GamesFragment() }
                             composable<Stats> { Statistics() }
-                            composable<More> { SettingsActivity() }
+                            composable<More> { 
+                                ProfileFragment(activity = this@ChooseGameActivity)
+                            }
                         }
                     }
                 }
