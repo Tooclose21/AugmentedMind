@@ -2,6 +2,7 @@ package com.example.apptest4
 
 import android.content.Intent
 import android.os.Bundle
+import android.widget.ImageButton
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
 import androidx.compose.foundation.background
@@ -28,6 +29,7 @@ import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.painterResource
+import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.util.fastForEach
 import androidx.compose.ui.util.fastForEachIndexed
@@ -40,6 +42,7 @@ import com.example.apptest4.helpers.NavbarItem
 import com.example.apptest4.helpers.Stats
 import com.example.apptest4.ui.theme.AppTest4Theme
 import com.example.apptest4.ui.theme.DarkGrey
+import com.example.apptest4.ui.theme.Orange
 import com.example.apptest4.ui.theme.YellowHighlight
 
 class ChooseGameActivity : ComponentActivity() {
@@ -121,32 +124,35 @@ class ChooseGameActivity : ComponentActivity() {
     private fun GamesFragment() {
         Column(
             modifier = Modifier
-                .padding(10.dp)
-                .fillMaxWidth(),
+                .fillMaxWidth()
+                .padding(60.dp),
             verticalArrangement = Arrangement.Center,
             horizontalAlignment = Alignment.CenterHorizontally
         ) {
-            Text(text = "Hello")
-            Button(onClick = {
-                startActivity(
+            Text(text = "Choose exercise", style = MaterialTheme.typography.displayLarge, color = Orange,
+            )
+            ImageButton(
+                imageResId = R.drawable.zajac,
+                onClick = { startActivity(
+                        Intent(
+                            this@ChooseGameActivity,
+                            DicesChooseNumber::class.java
+                        ))
+                    }
+            )
+            Text(text = "Roll dices", style = MaterialTheme.typography.displaySmall, color = Orange,
+            )
+            ImageButton(
+                imageResId = R.drawable.wyscigowka,
+                onClick = { startActivity(
                     Intent(
                         this@ChooseGameActivity,
                         CatchTheBear::class.java
                     )
-                )
-            }) {
-                Text(text = "Catch the bear")
-            }
-            Button(onClick = {
-                startActivity(
-                    Intent(
-                        this@ChooseGameActivity,
-                        DicesChooseNumber::class.java
-                    )
-                )
-            }) {
-                Text(text = "Roll dices")
-            }
+                )}
+            )
+            Text(text = "Catch the bear", style = MaterialTheme.typography.displaySmall, color = Orange,
+            )
         }
     }
 }

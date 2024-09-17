@@ -71,18 +71,17 @@ class DicesChooseMode : ComponentActivity() {
             }
         }
     }
-
-    @Composable
-    fun ImageButton(imageResId: Int, onClick: () -> Unit) {
-        Image(
-            painter = painterResource(id = imageResId),
-            contentDescription = null,
-            contentScale = ContentScale.Crop,
-            modifier = Modifier
-                .fillMaxWidth()
-                .height(150.dp)
-                .clickable(onClick = onClick)
-                .clip(RoundedCornerShape(16.dp))
-        )
-    }
+}
+@Composable
+fun ImageButton(imageResId: Int, onClick: () -> Unit) {
+    Image(
+        painter = painterResource(id = imageResId),
+        contentDescription = null,
+        contentScale = ContentScale.Crop,
+        modifier = Modifier
+            .fillMaxWidth()
+            .height(150.dp)
+            .clickable(onClick = onClick)
+            .clip(RoundedCornerShape(16.dp))
+    )
 }
