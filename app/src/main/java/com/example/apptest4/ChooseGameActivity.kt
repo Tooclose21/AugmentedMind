@@ -47,6 +47,7 @@ import com.example.apptest4.helpers.NavbarItem
 import com.example.apptest4.helpers.Stats
 import com.example.apptest4.ui.theme.AppTest4Theme
 import com.example.apptest4.ui.theme.DarkGrey
+import com.example.apptest4.ui.theme.DarkOrange
 import com.example.apptest4.ui.theme.Orange
 import com.example.apptest4.ui.theme.OrangeHighlight
 import com.example.apptest4.ui.theme.YellowHighlight
@@ -170,7 +171,7 @@ class ChooseGameActivity : ComponentActivity() {
                     .padding(horizontal = 50.dp, vertical = 0.dp),
                 verticalAlignment = Alignment.CenterVertically
             ) {
-                Text(text = "Reminders", style = MaterialTheme.typography.displaySmall, color = DarkGrey)
+                Text(text = "Reminders", style = MaterialTheme.typography.displaySmall, color = DarkOrange)
                 Spacer(modifier = Modifier.weight(1f))
                 Switch(checked = reminders, onCheckedChange = {
                         reminders = it

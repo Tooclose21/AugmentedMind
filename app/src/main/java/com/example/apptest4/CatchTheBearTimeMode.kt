@@ -6,18 +6,21 @@ import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxSize
+import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.layout.width
 import androidx.compose.material3.Button
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Surface
 import androidx.compose.material3.Text
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.semantics.Role.Companion.Button
 import androidx.compose.ui.unit.dp
 import com.example.apptest4.ui.theme.AppTest4Theme
 import com.example.apptest4.ui.theme.DarkGreen
+import com.example.apptest4.ui.theme.Orange
 
 class CatchTheBearTimeMode : ComponentActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -30,13 +33,13 @@ class CatchTheBearTimeMode : ComponentActivity() {
                 ) {
                     Column(
                         modifier = Modifier.fillMaxSize().padding(40.dp),
-                        verticalArrangement = Arrangement.SpaceEvenly,
                         horizontalAlignment = Alignment.CenterHorizontally
                     ) {
+                        Spacer(modifier = Modifier.height(20.dp))
                         Text(
-                            text = "Choose game time",
+                            text = "Choose game mode",
                             style = MaterialTheme.typography.displayLarge,
-                            color = DarkGreen
+                            color = Orange
                         )
                         fun startCatchTheBear(gameTime: Int) {
                             val intent = Intent(this@CatchTheBearTimeMode, CatchTheBear::class.java).apply {
@@ -44,22 +47,24 @@ class CatchTheBearTimeMode : ComponentActivity() {
                             }
                             startActivity(intent)
                         }
-
+                        Spacer(modifier = Modifier.height(50.dp))
                         Button(
                             onClick = { startCatchTheBear(10000)},
-                            modifier = Modifier.padding(vertical = 4.dp)
+                            modifier = Modifier.padding(vertical = 4.dp).height(120.dp)
                         ) {
                             Text(text = "3 min", style = MaterialTheme.typography.displayMedium)
                         }
+                        Spacer(modifier = Modifier.height(30.dp))
                         Button(
                             onClick = { startCatchTheBear(300000)},
-                            modifier = Modifier.padding(vertical = 4.dp)
+                            modifier = Modifier.padding(vertical = 4.dp).height(120.dp)
                         ) {
                             Text(text = "5 min", style = MaterialTheme.typography.displayMedium)
                         }
+                        Spacer(modifier = Modifier.height(30.dp))
                         Button(
                             onClick = { startCatchTheBear(600000)},
-                            modifier = Modifier.padding(vertical = 4.dp)
+                            modifier = Modifier.padding(vertical = 4.dp).height(130.dp)
                         ) {
                             Text(text = "10 min", style = MaterialTheme.typography.displayMedium)
                         }
