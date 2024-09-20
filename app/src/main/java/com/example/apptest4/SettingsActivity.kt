@@ -32,6 +32,11 @@ private val profileItems = listOf(
         icon = R.drawable.baseline_help_24
     ),
     ProfileItem(
+        navigate = { },
+        label = "Manage reminders",
+        icon = R.drawable.baseline_notifications_24
+    ),
+    ProfileItem(
         navigate = {
             //it.startActivity(Intent(it, StatisticsActivity::class.java))
                    },

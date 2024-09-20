@@ -9,8 +9,11 @@ import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.Row
+import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
+import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.systemBarsPadding
 import androidx.compose.material3.Button
@@ -20,10 +23,12 @@ import androidx.compose.material3.NavigationBar
 import androidx.compose.material3.NavigationBarItem
 import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Surface
+import androidx.compose.material3.Switch
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableIntStateOf
+import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.saveable.rememberSaveable
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
@@ -43,6 +48,7 @@ import com.example.apptest4.helpers.Stats
 import com.example.apptest4.ui.theme.AppTest4Theme
 import com.example.apptest4.ui.theme.DarkGrey
 import com.example.apptest4.ui.theme.Orange
+import com.example.apptest4.ui.theme.OrangeHighlight
 import com.example.apptest4.ui.theme.YellowHighlight
 
 class ChooseGameActivity : ComponentActivity() {
@@ -79,7 +85,7 @@ class ChooseGameActivity : ComponentActivity() {
                 Scaffold(
                     modifier = Modifier.fillMaxSize(),
                     bottomBar = {
-                        NavigationBar(modifier = Modifier.background(YellowHighlight)) {
+                        NavigationBar(modifier = Modifier.background(OrangeHighlight)) {
                             bottomNavItems.fastForEachIndexed { index, item ->
                                 NavigationBarItem(
                                     selected = index == selectedIndex,
@@ -122,6 +128,9 @@ class ChooseGameActivity : ComponentActivity() {
 
     @Composable
     private fun GamesFragment() {
+        var reminders by rememberSaveable {
+            mutableStateOf(false)
+        }
         Column(
             modifier = Modifier
                 .fillMaxWidth()
@@ -131,6 +140,7 @@ class ChooseGameActivity : ComponentActivity() {
         ) {
             Text(text = "Choose exercise", style = MaterialTheme.typography.displayLarge, color = Orange,
             )
+            Spacer(modifier = Modifier.height(30.dp))
             ImageButton(
                 imageResId = R.drawable.zajac,
                 onClick = { startActivity(
@@ -147,12 +157,25 @@ class ChooseGameActivity : ComponentActivity() {
                 onClick = { startActivity(
                     Intent(
                         this@ChooseGameActivity,
-                        CatchTheBear::class.java
+                        CatchTheBearTimeMode::class.java
                     )
                 )}
             )
             Text(text = "Catch the bear", style = MaterialTheme.typography.displaySmall, color = Orange,
             )
+            Spacer(modifier = Modifier.weight(1f))
+            Row(
+                modifier = Modifier
+                    .fillMaxWidth()
+                    .padding(horizontal = 50.dp, vertical = 0.dp),
+                verticalAlignment = Alignment.CenterVertically
+            ) {
+                Text(text = "Reminders", style = MaterialTheme.typography.displaySmall, color = DarkGrey)
+                Spacer(modifier = Modifier.weight(1f))
+                Switch(checked = reminders, onCheckedChange = {
+                        reminders = it
+                })
+            }
         }
     }
 }
