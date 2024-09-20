@@ -2,6 +2,7 @@ package com.example.apptest4
 
 import android.content.Intent
 import android.os.Bundle
+import android.util.Log
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
 import androidx.compose.foundation.layout.Arrangement
@@ -27,6 +28,7 @@ import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import androidx.lifecycle.lifecycleScope
 import com.example.apptest4.helpers.generateNumbersFloat
 import com.example.apptest4.helpers.generateNumbersInt
 import com.example.apptest4.ui.theme.AppTest4Theme
@@ -51,12 +53,17 @@ import io.github.sceneview.rememberMaterialLoader
 import io.github.sceneview.rememberModelLoader
 import io.github.sceneview.rememberNodes
 import io.github.sceneview.rememberView
+import kotlinx.coroutines.CoroutineScope
+import kotlinx.coroutines.delay
+import kotlinx.coroutines.launch
 
 private const val kModelFile = "models/icebear.glb"
 
 class CatchTheBear : ComponentActivity() {
+    private var gameTime = 10000
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
+        gameTime = intent.getIntExtra("gameTime", gameTime)
         setContent {
             AppTest4Theme {
                 Box(
@@ -128,7 +135,7 @@ class CatchTheBear : ComponentActivity() {
                         },
                         onSessionUpdated = { session, updatedFrame ->
                             frame = updatedFrame
-                            if (counter >= timeTrigger && maxRender < 5) {
+                            if (counter >= timeTrigger && maxRender < 10) {
                                 timeTrigger = generateNumbersInt(200, 500)
                                 counter = 0
                                 xValue = generateNumbersFloat(100f, 700f)
@@ -156,8 +163,15 @@ class CatchTheBear : ComponentActivity() {
                                             }
                                         )
                                     }
-
-                            } else if (counter < timeTrigger) {
+                                lifecycleScope.launch {
+                                    waitAndRemove {
+                                        childNodes.clear()
+                                    }
+                                    startActivity(Intent(this@CatchTheBear, FinishedGameActivity::class.java).also {
+                                        it.putExtra("gamePoints", gamePoints)
+                                    })
+                                    //Log.d("KONIEC", "koniec")
+                                }} else if (counter < timeTrigger) {
                                 counter++
                             }
                         },
@@ -210,6 +224,11 @@ class CatchTheBear : ComponentActivity() {
         }
     }
 
+    // function waits given number of seconds and performs an action
+    private fun CoroutineScope.waitAndRemove(action: () -> Unit) = launch {
+        delay(gameTime.toLong())
+        action()
+    }
 
     fun createAnchorNode(
         engine: Engine, modelLoader: ModelLoader, materialLoader: MaterialLoader, anchor: Anchor,
@@ -250,4 +269,5 @@ class CatchTheBear : ComponentActivity() {
         }
         return anchorNode
     }
+
 }
