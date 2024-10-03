@@ -81,6 +81,9 @@ dependencies {
     debugImplementation(libs.androidx.ui.tooling)
     debugImplementation(libs.androidx.ui.test.manifest)
 
+    // https://mvnrepository.com/artifact/androidx.compose.material3/material3
+    implementation("androidx.compose.material3:material3:1.3.0")
+
     // ArSceneView
     releaseImplementation ("io.github.sceneview:arsceneview:2.2.1")
 

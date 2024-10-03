@@ -42,20 +42,35 @@ class FinishedGameActivity : ComponentActivity() {
                     color = MaterialTheme.colorScheme.background
                 ) {
                     val gamePoints = intent.getIntExtra("gamePoints", 0)
-                    lifecycleScope.save(gamePoints, { Log.e("ERROR", it)}, {Toast.makeText(this, "points saved",
-                        Toast.LENGTH_LONG).show()})
+                    val deathTime = intent.getLongArrayExtra("deathOfBear")
+                    val gameTime = intent.getIntExtra("gameTime", 10000)
+                    Log.d("ARR", deathTime.toString())
+                    lifecycleScope.save(
+                        gamePoints,
+                        gameTime,
+                        deathTime?.toList() ?: listOf(),
+                        { Log.e("ERROR", it) },
+                        {
+                            Toast.makeText(
+                                this, "points saved",
+                                Toast.LENGTH_LONG
+                            ).show()
+                        })
                     GameFinished(gamePoints)
                 }
             }
         }
     }
+
     @Composable
     fun GameFinished(gamePoints: Int, modifier: Modifier = Modifier) {
-        Column(modifier = Modifier
-            .systemBarsPadding()
-            .fillMaxWidth(),
+        Column(
+            modifier = Modifier
+                .systemBarsPadding()
+                .fillMaxWidth(),
             verticalArrangement = Arrangement.Center,
-            horizontalAlignment = Alignment.CenterHorizontally) {
+            horizontalAlignment = Alignment.CenterHorizontally
+        ) {
             Text(
                 text = "Good job!",
                 style = MaterialTheme.typography.displayMedium,
@@ -72,21 +87,42 @@ class FinishedGameActivity : ComponentActivity() {
                 modifier = modifier,
                 color = Orange
             )
-            Button(onClick = { startActivity(Intent(this@FinishedGameActivity,
-                CatchTheBear::class.java)) }) {
-                Text(text = "Play again", style = MaterialTheme.typography.displaySmall,)
+            Button(onClick = {
+                startActivity(
+                    Intent(
+                        this@FinishedGameActivity,
+                        CatchTheBear::class.java
+                    )
+                )
+            }) {
+                Text(text = "Play again", style = MaterialTheme.typography.displaySmall)
             }
             Spacer(modifier = Modifier.height(16.dp))
-            Button(onClick = { startActivity(Intent(this@FinishedGameActivity,
-                ChooseGameActivity::class.java)) }) {
+            Button(onClick = {
+                startActivity(
+                    Intent(
+                        this@FinishedGameActivity,
+                        ChooseGameActivity::class.java
+                    )
+                )
+            }) {
                 Text(style = MaterialTheme.typography.displaySmall, text = "Return")
             }
         }
     }
 
-    private fun CoroutineScope.save(gamePoints: Int, onError: (String) -> Unit, onSuccess: () -> Unit) = launch {
-        store.addBearPoints("test", BearPoints(score = gamePoints, date = Calendar.getInstance().timeInMillis),
-            onSuccess, onError)
+    private fun CoroutineScope.save(
+        gamePoints: Int, gameTime: Int, timeArray: List<Long>, onError: (String) -> Unit,
+        onSuccess: () -> Unit
+    ) = launch {
+        store.addBearPoints(
+            "test", BearPoints(
+                score = gamePoints, timeArray = timeArray,
+                date = Calendar.getInstance().timeInMillis,
+                timeMode = gameTime
+            ),
+            onSuccess, onError
+        )
     }
 }
 

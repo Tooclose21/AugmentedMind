@@ -63,7 +63,7 @@ class DicesChooseMode : ComponentActivity() {
                             onClick = { startRememberDicesActivity(dicesNumber, 4000) }
                         )
                         ImageButton(
-                            imageResId = R.drawable.wyscigowka,
+                            imageResId = R.drawable.fastButton,
                             onClick = { startRememberDicesActivity(dicesNumber, 2000) }
                         )
                     }

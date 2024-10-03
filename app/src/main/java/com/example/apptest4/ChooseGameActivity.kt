@@ -2,7 +2,6 @@ package com.example.apptest4
 
 import android.content.Intent
 import android.os.Bundle
-import android.widget.ImageButton
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
 import androidx.compose.foundation.background
@@ -15,14 +14,11 @@ import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
-import androidx.compose.foundation.layout.systemBarsPadding
-import androidx.compose.material3.Button
 import androidx.compose.material3.Icon
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.NavigationBar
 import androidx.compose.material3.NavigationBarItem
 import androidx.compose.material3.Scaffold
-import androidx.compose.material3.Surface
 import androidx.compose.material3.Switch
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
@@ -34,9 +30,7 @@ import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.painterResource
-import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
-import androidx.compose.ui.util.fastForEach
 import androidx.compose.ui.util.fastForEachIndexed
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
@@ -50,7 +44,6 @@ import com.example.apptest4.ui.theme.DarkGrey
 import com.example.apptest4.ui.theme.DarkOrange
 import com.example.apptest4.ui.theme.Orange
 import com.example.apptest4.ui.theme.OrangeHighlight
-import com.example.apptest4.ui.theme.YellowHighlight
 
 class ChooseGameActivity : ComponentActivity() {
     private val bottomNavItems = listOf(
@@ -116,7 +109,7 @@ class ChooseGameActivity : ComponentActivity() {
                     ) {
                         NavHost(navController = navController, startDestination = Exercise) {
                             composable<Exercise> { GamesFragment() }
-                            composable<Stats> { Statistics() }
+                            composable<Stats> { StatisticsView() }
                             composable<More> { 
                                 ProfileFragment(activity = this@ChooseGameActivity)
                             }
@@ -143,7 +136,7 @@ class ChooseGameActivity : ComponentActivity() {
             )
             Spacer(modifier = Modifier.height(30.dp))
             ImageButton(
-                imageResId = R.drawable.zajac,
+                imageResId = R.drawable.dicesPic,
                 onClick = { startActivity(
                         Intent(
                             this@ChooseGameActivity,

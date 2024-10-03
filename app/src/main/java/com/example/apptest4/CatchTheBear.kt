@@ -1,8 +1,10 @@
 package com.example.apptest4
 
+import android.annotation.SuppressLint
 import android.content.Intent
 import android.os.Bundle
 import android.util.Log
+import android.widget.Toast
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
 import androidx.compose.foundation.layout.Arrangement
@@ -47,6 +49,7 @@ import io.github.sceneview.loaders.MaterialLoader
 import io.github.sceneview.loaders.ModelLoader
 import io.github.sceneview.node.CubeNode
 import io.github.sceneview.node.ModelNode
+import io.github.sceneview.node.Node
 import io.github.sceneview.rememberCollisionSystem
 import io.github.sceneview.rememberEngine
 import io.github.sceneview.rememberMaterialLoader
@@ -56,14 +59,16 @@ import io.github.sceneview.rememberView
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
+import java.util.Calendar
 
 private const val kModelFile = "models/icebear.glb"
 
 class CatchTheBear : ComponentActivity() {
-    private var gameTime = 10000
+    @SuppressLint("MutableCollectionMutableState")
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        gameTime = intent.getIntExtra("gameTime", gameTime)
+        val gameTime = intent.getIntExtra("gameTime", 10000)
+        val bearAppearanceTime = mutableMapOf<Node, Long>()
         setContent {
             AppTest4Theme {
                 Box(
@@ -79,6 +84,12 @@ class CatchTheBear : ComponentActivity() {
                     val collisionSystem = rememberCollisionSystem(view)
                     var planeRenderer by remember { mutableStateOf(true) }
                     var frame by remember { mutableStateOf<Frame?>(null) }
+                    var flag by remember {
+                        mutableStateOf(false)
+                    }
+                    val deathOfBear by remember {
+                        mutableStateOf(mutableListOf<Long>())
+                    }
 
                     // debug variables
                     var trackingFailureReason by remember {
@@ -110,6 +121,22 @@ class CatchTheBear : ComponentActivity() {
                     var gamePoints by remember {
                         mutableStateOf(0)
                     }
+
+                    lifecycleScope.waitAndRemove(action = {
+                        childNodes.clear()
+                        deathOfBear.forEach{
+                            Log.d("TIME", it.toString())
+                        }
+                        startActivity(
+                            Intent(
+                                this@CatchTheBear,
+                                FinishedGameActivity::class.java
+                            ).also {
+                                it.putExtra("gamePoints", gamePoints)
+                                it.putExtra("deathOfBear", deathOfBear.toLongArray())
+                                it.putExtra("gameTime", gameTime)
+                            })
+                    }, gameTime = gameTime, flag, setFlag = {flag = it})
 
                     ARScene(
                         modifier = Modifier.fillMaxSize(),
@@ -149,48 +176,56 @@ class CatchTheBear : ComponentActivity() {
                                         depthPoint = false, point = false
                                     )
                                 }?.createAnchorOrNull()?.let { anchor ->
-                                        planeRenderer = false
-                                        maxRender++
-                                        childNodes += createAnchorNode(
-                                            engine = engine,
-                                            modelLoader = modelLoader,
-                                            materialLoader = materialLoader,
-                                            anchor = anchor,
-                                            onLongPress = {
-                                                gamePoints++
-                                                maxRender--
-                                                childNodes.remove(it)
-                                            }
-                                        )
-                                    }
-                                lifecycleScope.launch {
-                                    waitAndRemove {
-                                        childNodes.clear()
-                                    }
-                                    startActivity(Intent(this@CatchTheBear, FinishedGameActivity::class.java).also {
-                                        it.putExtra("gamePoints", gamePoints)
-                                    })
-                                    //Log.d("KONIEC", "koniec")
-                                }} else if (counter < timeTrigger) {
+                                    planeRenderer = false
+                                    maxRender++
+                                    val createAnchorNode = createAnchorNode(
+                                        engine = engine,
+                                        modelLoader = modelLoader,
+                                        materialLoader = materialLoader,
+                                        anchor = anchor,
+                                        onLongPress = {
+                                            gamePoints++
+                                            maxRender--
+                                            childNodes.remove(it)
+                                            deathOfBear.add(Calendar.getInstance().timeInMillis - bearAppearanceTime[it]!!)
+                                            Log.d("TIME", (Calendar.getInstance().timeInMillis - bearAppearanceTime[it]!!).toString())
+                                            Log.d("TIME", (bearAppearanceTime[it]!!).toString())
+                                        }
+                                    )
+                                    childNodes += createAnchorNode
+                                    bearAppearanceTime.put(createAnchorNode, Calendar.getInstance().timeInMillis)
+                                }
+                                //Log.d("KONIEC", "koniec")
+                            } else if (counter < timeTrigger) {
                                 counter++
                             }
                         },
                     )
-                    Column(modifier = Modifier
-                        .systemBarsPadding()
-                        .fillMaxWidth()
-                        .align(Alignment.TopCenter),
-                        verticalArrangement = Arrangement.spacedBy(40.dp)) {
-                        Row(modifier = Modifier
+                    Column(
+                        modifier = Modifier
                             .systemBarsPadding()
-                            .fillMaxWidth()) {
+                            .fillMaxWidth()
+                            .align(Alignment.TopCenter),
+                        verticalArrangement = Arrangement.spacedBy(40.dp)
+                    ) {
+                        Row(
+                            modifier = Modifier
+                                .systemBarsPadding()
+                                .fillMaxWidth()
+                        ) {
                             Button(modifier = Modifier
                                 .systemBarsPadding()
                                 .padding(30.dp),
-                                onClick = { startActivity(Intent(this@CatchTheBear,
-                                    FinishedGameActivity::class.java).also {
+                                onClick = {
+                                    startActivity(Intent(
+                                        this@CatchTheBear,
+                                        FinishedGameActivity::class.java
+                                    ).also {
                                         it.putExtra("gamePoints", gamePoints)
-                                }) }) {
+                                        it.putExtra("deathOfBear", deathOfBear.toLongArray())
+                                        it.putExtra("gameTime", gameTime)
+                                    })
+                                }) {
                                 Text(fontSize = 20.sp, text = "Finish")
                             }
                             Spacer(modifier = Modifier.weight(1f))
@@ -225,7 +260,13 @@ class CatchTheBear : ComponentActivity() {
     }
 
     // function waits given number of seconds and performs an action
-    private fun CoroutineScope.waitAndRemove(action: () -> Unit) = launch {
+    private fun CoroutineScope.waitAndRemove(
+        action: () -> Unit, gameTime: Int, flag: Boolean,
+        setFlag: (Boolean) -> Unit
+    ) = launch {
+        if (flag) {return@launch}
+        Toast.makeText(this@CatchTheBear, "start", Toast.LENGTH_SHORT).show()
+        setFlag(true)
         delay(gameTime.toLong())
         action()
     }
@@ -241,10 +282,10 @@ class CatchTheBear : ComponentActivity() {
 
             scaleToUnits = generateNumbersFloat(0.1f, 0.5f)
         ).apply {
-                // Model Node needs to be editable for independent rotation from the anchor rotation
-                isEditable = false
-                editableScaleRange = 0.2f..0.75f
-            }
+            // Model Node needs to be editable for independent rotation from the anchor rotation
+            isEditable = false
+            editableScaleRange = 0.2f..0.75f
+        }
         val boundingBoxNode = CubeNode(
             engine,
             size = modelNode.extents,
@@ -253,8 +294,8 @@ class CatchTheBear : ComponentActivity() {
                 Color.White.copy(alpha = 0.5f)
             )
         ).apply {
-                isVisible = false
-            }
+            isVisible = false
+        }
         modelNode.addChildNode(boundingBoxNode)
         anchorNode.addChildNode(modelNode)
 

@@ -1,4 +1,5 @@
 package com.example.apptest4
+import android.content.Intent
 import androidx.activity.ComponentActivity
 import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
@@ -38,7 +39,7 @@ private val profileItems = listOf(
     ),
     ProfileItem(
         navigate = {
-            //it.startActivity(Intent(it, StatisticsActivity::class.java))
+            it.startActivity(Intent(it, AccountSettings::class.java))
                    },
         label = "Account settings",
         icon = R.drawable.baseline_settings_24
