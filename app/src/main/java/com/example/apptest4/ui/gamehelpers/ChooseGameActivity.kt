@@ -1,4 +1,4 @@
-package com.example.apptest4
+package com.example.apptest4.ui.gamehelpers
 
 import android.content.Intent
 import android.os.Bundle
@@ -35,15 +35,19 @@ import androidx.compose.ui.util.fastForEachIndexed
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.compose.rememberNavController
+import com.example.apptest4.R
 import com.example.apptest4.helpers.Exercise
 import com.example.apptest4.helpers.More
 import com.example.apptest4.helpers.NavbarItem
 import com.example.apptest4.helpers.Stats
 import com.example.apptest4.ui.theme.AppTest4Theme
+import com.example.apptest4.ui.theme.DarkGreen
 import com.example.apptest4.ui.theme.DarkGrey
 import com.example.apptest4.ui.theme.DarkOrange
 import com.example.apptest4.ui.theme.Orange
 import com.example.apptest4.ui.theme.OrangeHighlight
+import com.example.apptest4.ui.userprofile.ProfileFragment
+import com.example.apptest4.ui.userprofile.StatisticsView
 
 class ChooseGameActivity : ComponentActivity() {
     private val bottomNavItems = listOf(
@@ -136,7 +140,7 @@ class ChooseGameActivity : ComponentActivity() {
             )
             Spacer(modifier = Modifier.height(30.dp))
             ImageButton(
-                imageResId = R.drawable.dicesPic,
+                imageResId = R.drawable.dices_pic,
                 onClick = { startActivity(
                         Intent(
                             this@ChooseGameActivity,
@@ -144,10 +148,11 @@ class ChooseGameActivity : ComponentActivity() {
                         ))
                     }
             )
-            Text(text = "Roll dices", style = MaterialTheme.typography.displaySmall, color = Orange,
+            Text(text = "Roll dices", style = MaterialTheme.typography.displaySmall, color = DarkGreen,
             )
+            Spacer(modifier = Modifier.height(10.dp))
             ImageButton(
-                imageResId = R.drawable.wyscigowka,
+                imageResId = R.drawable.bear_pic,
                 onClick = { startActivity(
                     Intent(
                         this@ChooseGameActivity,

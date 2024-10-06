@@ -1,4 +1,4 @@
-package com.example.apptest4
+package com.example.apptest4.ui.games
 
 import android.content.Intent
 import android.os.Bundle
@@ -31,6 +31,8 @@ import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.lifecycle.lifecycleScope
+import com.example.apptest4.ui.gamehelpers.ChooseGameActivity
+import com.example.apptest4.ui.gamehelpers.DicesFinishPanel
 import com.example.apptest4.controllers.RememberDicesLogic
 import com.example.apptest4.ui.theme.AppTest4Theme
 import com.google.android.filament.Engine

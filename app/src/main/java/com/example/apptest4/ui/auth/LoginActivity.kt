@@ -1,8 +1,7 @@
-package com.example.apptest4
+package com.example.apptest4.ui.auth
 
 import android.content.Intent
 import android.os.Bundle
-import android.widget.Toast
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
 import androidx.compose.foundation.background
@@ -33,17 +32,16 @@ import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.text.input.KeyboardType
 import androidx.compose.ui.text.input.PasswordVisualTransformation
 import androidx.compose.ui.unit.dp
+import com.example.apptest4.ui.gamehelpers.ChooseGameActivity
 import com.example.apptest4.computation.FirebaseAuthService
 import com.example.apptest4.controllers.AuthController
 import com.example.apptest4.entity.LoginCredentials
 import com.example.apptest4.ui.theme.AppTest4Theme
 import com.example.apptest4.ui.theme.DarkGreen
 import com.example.apptest4.ui.theme.DarkGrey
-import com.example.apptest4.ui.theme.GreenHighlight
 import com.example.apptest4.ui.theme.LightBack
 import com.example.apptest4.ui.theme.Orange
 

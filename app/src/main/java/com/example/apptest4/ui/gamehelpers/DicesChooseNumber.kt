@@ -1,4 +1,4 @@
-package com.example.apptest4
+package com.example.apptest4.ui.gamehelpers
 
 import android.content.Intent
 import android.os.Bundle
@@ -23,9 +23,7 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
-import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
-import androidx.compose.ui.unit.sp
 import com.example.apptest4.ui.theme.AppTest4Theme
 import com.example.apptest4.ui.theme.DarkGreen
 import com.example.apptest4.ui.theme.GreenHighlight

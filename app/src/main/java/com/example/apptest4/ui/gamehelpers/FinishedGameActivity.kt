@@ -1,4 +1,4 @@
-package com.example.apptest4
+package com.example.apptest4.ui.gamehelpers
 
 import android.content.Intent
 import android.os.Bundle
@@ -21,10 +21,10 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
-import androidx.compose.ui.unit.sp
 import androidx.lifecycle.lifecycleScope
 import com.example.apptest4.computation.db.FirebaseStore
 import com.example.apptest4.entity.BearPoints
+import com.example.apptest4.ui.games.CatchTheBear
 import com.example.apptest4.ui.theme.AppTest4Theme
 import com.example.apptest4.ui.theme.Orange
 import kotlinx.coroutines.CoroutineScope

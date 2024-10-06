@@ -1,4 +1,4 @@
-package com.example.apptest4
+package com.example.apptest4.ui.gamehelpers
 import android.content.Intent
 import android.os.Bundle
 import android.util.Log
@@ -21,6 +21,7 @@ import androidx.compose.ui.unit.sp
 import androidx.lifecycle.lifecycleScope
 import com.example.apptest4.computation.db.FirebaseStore
 import com.example.apptest4.entity.DicesPoints
+import com.example.apptest4.ui.games.RememberDices
 import com.example.apptest4.ui.theme.AppTest4Theme
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.launch

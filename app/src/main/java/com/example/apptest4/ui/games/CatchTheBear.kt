@@ -1,4 +1,4 @@
-package com.example.apptest4
+package com.example.apptest4.ui.games
 
 import android.annotation.SuppressLint
 import android.content.Intent
@@ -31,6 +31,8 @@ import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.lifecycle.lifecycleScope
+import com.example.apptest4.ui.gamehelpers.FinishedGameActivity
+import com.example.apptest4.R
 import com.example.apptest4.helpers.generateNumbersFloat
 import com.example.apptest4.helpers.generateNumbersInt
 import com.example.apptest4.ui.theme.AppTest4Theme
@@ -61,9 +63,8 @@ import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
 import java.util.Calendar
 
-private const val kModelFile = "models/icebear.glb"
-
 class CatchTheBear : ComponentActivity() {
+    private val kModelFile = "models/icebear.glb"
     @SuppressLint("MutableCollectionMutableState")
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)

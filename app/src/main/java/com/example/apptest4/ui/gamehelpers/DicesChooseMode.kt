@@ -1,4 +1,4 @@
-package com.example.apptest4
+package com.example.apptest4.ui.gamehelpers
 
 import android.content.Intent
 import android.os.Bundle
@@ -23,6 +23,8 @@ import androidx.compose.ui.draw.clip
 import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.unit.dp
+import com.example.apptest4.R
+import com.example.apptest4.ui.games.RememberDices
 import com.example.apptest4.ui.theme.AppTest4Theme
 import com.example.apptest4.ui.theme.DarkGreen
 
@@ -55,15 +57,15 @@ class DicesChooseMode : ComponentActivity() {
                         }
 
                         ImageButton(
-                            imageResId = R.drawable.slimak,
+                            imageResId = R.drawable.slow_button,
                             onClick = { startRememberDicesActivity(dicesNumber, 6000) }
                         )
                         ImageButton(
-                            imageResId = R.drawable.zajac,
+                            imageResId = R.drawable.medium_button,
                             onClick = { startRememberDicesActivity(dicesNumber, 4000) }
                         )
                         ImageButton(
-                            imageResId = R.drawable.fastButton,
+                            imageResId = R.drawable.fast_button,
                             onClick = { startRememberDicesActivity(dicesNumber, 2000) }
                         )
                     }

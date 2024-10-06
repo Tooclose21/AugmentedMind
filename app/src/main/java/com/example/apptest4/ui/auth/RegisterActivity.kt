@@ -1,4 +1,4 @@
-package com.example.apptest4
+package com.example.apptest4.ui.auth
 
 import android.content.Intent
 import android.os.Bundle
@@ -34,7 +34,6 @@ import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.text.input.KeyboardType
 import androidx.compose.ui.text.input.PasswordVisualTransformation
 import androidx.compose.ui.unit.dp
@@ -45,11 +44,9 @@ import com.example.apptest4.entity.RegisterCredentials
 import com.example.apptest4.ui.theme.AppTest4Theme
 import com.example.apptest4.ui.theme.DarkGreen
 import com.example.apptest4.ui.theme.DarkGrey
-import com.example.apptest4.ui.theme.GreenHighlight
 import com.example.apptest4.ui.theme.LightBack
 import com.example.apptest4.ui.theme.Orange
 import kotlinx.coroutines.CoroutineScope
-import kotlinx.coroutines.launch
 
 class RegisterActivity : ComponentActivity() {
 

@@ -90,6 +90,8 @@ dependencies {
     // ARSceneview
     implementation ("io.github.sceneview:arsceneview:2.1.0")
 
+    implementation ("io.github.ehsannarmani:compose-charts:0.0.13")
+
     implementation(platform("com.google.firebase:firebase-bom:33.1.2"))
     implementation("com.google.firebase:firebase-analytics")
 }
