@@ -32,6 +32,7 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.util.fastForEachIndexed
+import androidx.lifecycle.lifecycleScope
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.compose.rememberNavController
@@ -113,7 +114,7 @@ class ChooseGameActivity : ComponentActivity() {
                     ) {
                         NavHost(navController = navController, startDestination = Exercise) {
                             composable<Exercise> { GamesFragment() }
-                            composable<Stats> { StatisticsView() }
+                            composable<Stats> { StatisticsView(lifecycleScope) }
                             composable<More> { 
                                 ProfileFragment(activity = this@ChooseGameActivity)
                             }

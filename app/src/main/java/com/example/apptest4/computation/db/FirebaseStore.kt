@@ -28,4 +28,55 @@ class FirebaseStore : IStore {
             .addOnFailureListener { onError(it.message ?: "unknown message") }
             .addOnSuccessListener { onSuccess() }
     }
+
+    override suspend fun fetchDicesPoints(
+        userId: String,
+        onSuccess: (List<DicesPoints>) -> Unit,
+        onError: (String) -> Unit
+    ) {
+        database.collection("Dices_$userId")
+            .get()
+            .addOnSuccessListener {
+                onSuccess(
+                    it.toObjects(DicesPoints::class.java)
+                )
+            }
+            .addOnFailureListener{ onError(it.message ?: "unknown message") }
+    }
+
+    override suspend fun fetchBearPoints(
+        userId: String,
+        onSuccess: (List<BearPoints>) -> Unit,
+        onError: (String) -> Unit
+    ) {
+        database.collection("Bear_$userId")
+            .get()
+            .addOnSuccessListener {
+                onSuccess(
+                    it.toObjects(BearPoints::class.java)
+                )
+            }
+            .addOnFailureListener{ onError(it.message ?: "unknown message") }
+    }
+
+    override suspend fun fetchAll(
+        userId: String,
+        onSuccess: (List<DicesPoints>, List<BearPoints>) -> Unit,
+        onError: (String) -> Unit
+    ) {
+        database.collection("Dices_$userId")
+            .get()
+            .addOnSuccessListener {
+                val dices = it.toObjects(DicesPoints::class.java)
+                database.collection("Bear_$userId")
+                    .get()
+                    .addOnSuccessListener {
+                        onSuccess(dices,
+                            it.toObjects(BearPoints::class.java)
+                        )
+                    }
+                    .addOnFailureListener{ onError(it.message ?: "unknown message") }
+            }
+            .addOnFailureListener{ onError(it.message ?: "unknown message") }
+    }
 }

@@ -10,8 +10,6 @@ import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.lazy.LazyColumn
-import androidx.compose.foundation.rememberScrollState
-import androidx.compose.foundation.verticalScroll
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.KeyboardArrowLeft
 import androidx.compose.material.icons.filled.KeyboardArrowRight
@@ -23,6 +21,7 @@ import androidx.compose.material3.SegmentedButtonDefaults
 import androidx.compose.material3.SingleChoiceSegmentedButtonRow
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableIntStateOf
 import androidx.compose.runtime.mutableStateOf
@@ -33,19 +32,35 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import androidx.lifecycle.LifecycleCoroutineScope
+import com.example.apptest4.controllers.StatisticsController
+import com.example.apptest4.controllers.StatisticsManager
 import com.example.apptest4.helpers.memoryColorMap
 import com.example.apptest4.ui.theme.DarkGreen
 import com.example.apptest4.ui.theme.DarkGrey
 import com.example.apptest4.ui.theme.GreenHighlight
 import com.example.apptest4.ui.theme.LightBack
 import com.example.apptest4.ui.theme.Orange
-import com.example.apptest4.ui.theme.OrangeHighlight
+import kotlinx.coroutines.CoroutineScope
+import kotlinx.coroutines.launch
 import java.text.SimpleDateFormat
 import java.util.Calendar
 
+private val manager = StatisticsManager(StatisticsController())
+
+private fun CoroutineScope.fetch(onFetch: (Boolean) -> Unit) = launch {
+    manager.fetchAll(onFetch)
+}
+
 @Composable
-fun StatisticsView() {
+fun StatisticsView(lifecycleScope: LifecycleCoroutineScope) {
+
     var selectedIndex by remember { mutableStateOf(0) }
+    var ready by remember {
+        mutableStateOf(false)
+    }
+    lifecycleScope.fetch { ready = it }
+
     val options = listOf("General", "Memory", "Focus")
 
     var calendar by remember {
@@ -54,6 +69,19 @@ fun StatisticsView() {
     var lookUpMonth by remember {
         mutableIntStateOf(0)
     }
+    val dicesNumberList by remember {
+        mutableStateOf(listOf(2,3,4,5,6))
+    }
+    var dicesNumberIndex by remember {
+        mutableStateOf(0)
+    }
+    val modesList by remember {
+        mutableStateOf(listOf("Slow", "Medium", "Fast"))
+    }
+    var modesListIndex by remember {
+        mutableStateOf(0)
+    }
+    if (ready){
     LazyColumn(
         modifier = Modifier
             // .verticalScroll(rememberScrollState())
@@ -118,50 +146,15 @@ fun StatisticsView() {
             item {
                 Text(
                     text = "Activity chart",
-                    style = MaterialTheme.typography.displaySmall,
+                    style = MaterialTheme.typography.displayMedium,
                     color = DarkGreen
                 )
             }
             item {
                 ActivityChart(
-                    activityList = listOf(
-                        -1,
-                        -1,
-                        0,
-                        1,
-                        1,
-                        0,
-                        0,
-                        1,
-                        0,
-                        0,
-                        1,
-                        1,
-                        0,
-                        0,
-                        1,
-                        0,
-                        0,
-                        1,
-                        1,
-                        0,
-                        0,
-                        1,
-                        0,
-                        0,
-                        1,
-                        1,
-                        0,
-                        0,
-                        1,
-                        0,
-                        -1,
-                        -1,
-                        -1,
-                        -1,
-                        -1
-                    ), modifier = Modifier
-                        .padding(horizontal = 35.dp)
+                    activityList = manager.provideActivity(calendar)
+                    , modifier = Modifier
+                        .padding(horizontal = 25.dp)
                         .fillMaxWidth()
                 )
             }
@@ -169,7 +162,7 @@ fun StatisticsView() {
             item {
                 Text(
                     text = "Accuracy",
-                    style = MaterialTheme.typography.displaySmall,
+                    style = MaterialTheme.typography.displayMedium,
                     color = DarkGreen
                 )
             }
@@ -177,10 +170,84 @@ fun StatisticsView() {
                 MemoryStatistics(
                     modifier = Modifier
                         .fillMaxWidth()
-                        .height(200.dp)
+                        .height(260.dp)
                 )
             }
+            item {
+                Row(modifier = Modifier
+                    .fillMaxWidth()
+                    .padding(horizontal = 40.dp), verticalAlignment = Alignment.CenterVertically) {
+                    Spacer(modifier = Modifier.height(20.dp))
+                    Text(text = "Dices Number", style = MaterialTheme.typography.displaySmall, color = DarkGrey)
+                    Spacer(modifier = Modifier.weight(1f))
+                    IconButton(onClick = {
+                        if (dicesNumberIndex == 0) {
+                            dicesNumberIndex = dicesNumberList.size - 1
+                            return@IconButton
+                        }
+                        dicesNumberIndex -= 1
+                        }
+                    ) {
+                        Icon(imageVector = Icons.Default.KeyboardArrowLeft, contentDescription = "Left")
+                    }
+                    Spacer(modifier = Modifier.weight(1f))
+                    Text(text = "${dicesNumberList[dicesNumberIndex]}",
+                        style = MaterialTheme.typography.displaySmall, color = DarkGrey)
+                    Spacer(modifier = Modifier.weight(1f))
+                    IconButton(onClick = {
+                        if (dicesNumberIndex == dicesNumberList.size - 1) {
+                            dicesNumberIndex = 0
+                            return@IconButton
+                        }
+                        dicesNumberIndex +=1
+                        }
+                    ) {
+                        Icon(imageVector = Icons.Default.KeyboardArrowRight, contentDescription = "Right")
+                    }
+
+                }
+            }
+            item {
+                Row(modifier = Modifier
+                    .fillMaxWidth()
+                    .padding(horizontal = 40.dp), verticalAlignment = Alignment.CenterVertically) {
+                    Text(text = "Mode", style = MaterialTheme.typography.displaySmall, color = DarkGrey)
+                    Spacer(modifier = Modifier.weight(1f))
+                    IconButton(onClick = {
+                        if (modesListIndex == 0) {
+                            modesListIndex = modesList.size - 1
+                            return@IconButton
+                        }
+                        modesListIndex -= 1
+                    }
+                    ) {
+                        Icon(imageVector = Icons.Default.KeyboardArrowLeft, contentDescription = "Left")
+                    }
+                    Spacer(modifier = Modifier.weight(0.5f))
+                    Text(text = modesList[modesListIndex],
+                        style = MaterialTheme.typography.displaySmall, color = DarkGrey)
+                    Spacer(modifier = Modifier.weight(0.5f))
+                    IconButton(onClick = {
+                        if (modesListIndex == modesList.size - 1) {
+                            modesListIndex = 0
+                            return@IconButton
+                        }
+                        modesListIndex +=1
+                    }
+                    ) {
+                        Icon(imageVector = Icons.Default.KeyboardArrowRight, contentDescription = "Right")
+                    }
+
+                }
+            }
         }
+
+        if (selectedIndex == 2) {
+
+        }
+    }
+    }else {
+        Text(text = "Not ready")
     }
 }
 
