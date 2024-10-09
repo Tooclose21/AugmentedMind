@@ -43,7 +43,7 @@ import com.example.apptest4.helpers.NavbarItem
 import com.example.apptest4.helpers.Stats
 import com.example.apptest4.ui.theme.AppTest4Theme
 import com.example.apptest4.ui.theme.DarkGreen
-import com.example.apptest4.ui.theme.DarkGrey
+import com.example.apptest4.ui.theme.DarkGray
 import com.example.apptest4.ui.theme.DarkOrange
 import com.example.apptest4.ui.theme.Orange
 import com.example.apptest4.ui.theme.OrangeHighlight
@@ -94,13 +94,13 @@ class ChooseGameActivity : ComponentActivity() {
                                     },
                                     icon = {
                                         Icon(
-                                            tint = DarkGrey, painter = painterResource(
+                                            tint = DarkGray, painter = painterResource(
                                                 id = if (selectedIndex == index)
                                                     item.selectedIcon else item.unselectedIcon
                                             ), contentDescription = item.label
                                         )
                                     },
-                                    label = { Text(text = item.label, color = DarkGrey, style =
+                                    label = { Text(text = item.label, color = DarkGray, style =
                                     MaterialTheme.typography.titleLarge) },
                                 )
                             }

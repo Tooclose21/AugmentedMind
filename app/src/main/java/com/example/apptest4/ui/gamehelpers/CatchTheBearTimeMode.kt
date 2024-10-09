@@ -47,7 +47,7 @@ class CatchTheBearTimeMode : ComponentActivity() {
                         }
                         Spacer(modifier = Modifier.height(50.dp))
                         Button(
-                            onClick = { startCatchTheBear(10000)},
+                            onClick = { startCatchTheBear(180000)},
                             modifier = Modifier.padding(vertical = 4.dp).height(120.dp)
                         ) {
                             Text(text = "3 min", style = MaterialTheme.typography.displayMedium)

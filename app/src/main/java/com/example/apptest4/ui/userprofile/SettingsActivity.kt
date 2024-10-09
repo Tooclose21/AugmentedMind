@@ -23,7 +23,7 @@ import androidx.compose.ui.unit.dp
 import com.example.apptest4.R
 import com.example.apptest4.helpers.ProfileItem
 import com.example.apptest4.ui.theme.DarkGreen
-import com.example.apptest4.ui.theme.DarkGrey
+import com.example.apptest4.ui.theme.DarkGray
 import com.example.apptest4.ui.theme.LightBack
 
 private val profileItems = listOf(
@@ -95,7 +95,7 @@ fun ProfileListItem(item: ProfileItem, activity: ComponentActivity, modifier: Mo
                 .padding(horizontal = 10.dp, vertical = 8.dp),
             painter = painterResource(item.icon),
             contentDescription = item.label,
-            tint = DarkGrey
+            tint = DarkGray
         )
         Text(
             text = item.label,

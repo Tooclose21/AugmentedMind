@@ -43,7 +43,7 @@ import com.example.apptest4.controllers.CredentialsValidator
 import com.example.apptest4.entity.RegisterCredentials
 import com.example.apptest4.ui.theme.AppTest4Theme
 import com.example.apptest4.ui.theme.DarkGreen
-import com.example.apptest4.ui.theme.DarkGrey
+import com.example.apptest4.ui.theme.DarkGray
 import com.example.apptest4.ui.theme.LightBack
 import com.example.apptest4.ui.theme.Orange
 import kotlinx.coroutines.CoroutineScope
@@ -181,7 +181,7 @@ class RegisterActivity : ComponentActivity() {
                 Text(
                     text = "Already have an account?",
                     style = MaterialTheme.typography.headlineLarge,
-                    color = DarkGrey
+                    color = DarkGray
                 )
 
                 Text(text = " Login",

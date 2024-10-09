@@ -21,7 +21,6 @@ import androidx.compose.material3.SegmentedButtonDefaults
 import androidx.compose.material3.SingleChoiceSegmentedButtonRow
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
-import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableIntStateOf
 import androidx.compose.runtime.mutableStateOf
@@ -36,11 +35,14 @@ import androidx.lifecycle.LifecycleCoroutineScope
 import com.example.apptest4.controllers.StatisticsController
 import com.example.apptest4.controllers.StatisticsManager
 import com.example.apptest4.helpers.memoryColorMap
+import com.example.apptest4.helpers.memoryColorMapOrange
 import com.example.apptest4.ui.theme.DarkGreen
-import com.example.apptest4.ui.theme.DarkGrey
+import com.example.apptest4.ui.theme.DarkGray
+import com.example.apptest4.ui.theme.DarkOrange
 import com.example.apptest4.ui.theme.GreenHighlight
 import com.example.apptest4.ui.theme.LightBack
 import com.example.apptest4.ui.theme.Orange
+import com.example.apptest4.ui.theme.Red
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.launch
 import java.text.SimpleDateFormat
@@ -117,6 +119,9 @@ fun StatisticsView(lifecycleScope: LifecycleCoroutineScope) {
                 }
             }
         }
+
+        if (selectedIndex == 0) {}
+
         if (selectedIndex == 1) {
             item {
                 Row(modifier = Modifier.fillMaxWidth(), verticalAlignment = Alignment.CenterVertically) {
@@ -130,7 +135,7 @@ fun StatisticsView(lifecycleScope: LifecycleCoroutineScope) {
                     }
                     Spacer(modifier = Modifier.weight(1f))
                     Text(text = "${SimpleDateFormat("MMM").format(calendar.time)} ${calendar.get(Calendar.YEAR)}",
-                        style = MaterialTheme.typography.displaySmall, color = DarkGrey)
+                        style = MaterialTheme.typography.displaySmall, color = DarkGray)
                     Spacer(modifier = Modifier.weight(1f))
                     IconButton(onClick = {
                         lookUpMonth += 1
@@ -155,7 +160,8 @@ fun StatisticsView(lifecycleScope: LifecycleCoroutineScope) {
                     activityList = manager.provideActivity(calendar)
                     , modifier = Modifier
                         .padding(horizontal = 25.dp)
-                        .fillMaxWidth()
+                        .fillMaxWidth(),
+                    memoryColorMap
                 )
             }
             item { Spacer(modifier = Modifier.height(10.dp)) }
@@ -178,7 +184,7 @@ fun StatisticsView(lifecycleScope: LifecycleCoroutineScope) {
                     .fillMaxWidth()
                     .padding(horizontal = 40.dp), verticalAlignment = Alignment.CenterVertically) {
                     Spacer(modifier = Modifier.height(20.dp))
-                    Text(text = "Dices Number", style = MaterialTheme.typography.displaySmall, color = DarkGrey)
+                    Text(text = "Dices Number", style = MaterialTheme.typography.displaySmall, color = DarkGray)
                     Spacer(modifier = Modifier.weight(1f))
                     IconButton(onClick = {
                         if (dicesNumberIndex == 0) {
@@ -192,7 +198,7 @@ fun StatisticsView(lifecycleScope: LifecycleCoroutineScope) {
                     }
                     Spacer(modifier = Modifier.weight(1f))
                     Text(text = "${dicesNumberList[dicesNumberIndex]}",
-                        style = MaterialTheme.typography.displaySmall, color = DarkGrey)
+                        style = MaterialTheme.typography.displaySmall, color = DarkGray)
                     Spacer(modifier = Modifier.weight(1f))
                     IconButton(onClick = {
                         if (dicesNumberIndex == dicesNumberList.size - 1) {
@@ -211,7 +217,7 @@ fun StatisticsView(lifecycleScope: LifecycleCoroutineScope) {
                 Row(modifier = Modifier
                     .fillMaxWidth()
                     .padding(horizontal = 40.dp), verticalAlignment = Alignment.CenterVertically) {
-                    Text(text = "Mode", style = MaterialTheme.typography.displaySmall, color = DarkGrey)
+                    Text(text = "Mode", style = MaterialTheme.typography.displaySmall, color = DarkGray)
                     Spacer(modifier = Modifier.weight(1f))
                     IconButton(onClick = {
                         if (modesListIndex == 0) {
@@ -225,7 +231,7 @@ fun StatisticsView(lifecycleScope: LifecycleCoroutineScope) {
                     }
                     Spacer(modifier = Modifier.weight(0.5f))
                     Text(text = modesList[modesListIndex],
-                        style = MaterialTheme.typography.displaySmall, color = DarkGrey)
+                        style = MaterialTheme.typography.displaySmall, color = DarkGray)
                     Spacer(modifier = Modifier.weight(0.5f))
                     IconButton(onClick = {
                         if (modesListIndex == modesList.size - 1) {
@@ -243,11 +249,91 @@ fun StatisticsView(lifecycleScope: LifecycleCoroutineScope) {
         }
 
         if (selectedIndex == 2) {
+            item {
+                Row(modifier = Modifier.fillMaxWidth(), verticalAlignment = Alignment.CenterVertically) {
+                    IconButton(onClick = {
+                        lookUpMonth -= 1
+                        calendar = Calendar.getInstance().apply {
+                            add(Calendar.MONTH, lookUpMonth)
+                        }
+                    }) {
+                        Icon(imageVector = Icons.Default.KeyboardArrowLeft, contentDescription = "Left")
+                    }
+                    Spacer(modifier = Modifier.weight(1f))
+                    Text(text = "${SimpleDateFormat("MMM").format(calendar.time)} ${calendar.get(Calendar.YEAR)}",
+                        style = MaterialTheme.typography.displaySmall, color = DarkGray)
+                    Spacer(modifier = Modifier.weight(1f))
+                    IconButton(onClick = {
+                        lookUpMonth += 1
+                        calendar = Calendar.getInstance().apply {
+                            add(Calendar.MONTH, lookUpMonth)
+                        }
+                    }) {
+                        Icon(imageVector = Icons.Default.KeyboardArrowRight, contentDescription = "Right")
+                    }
 
+                }
+            }
+            item {
+                Text(
+                    text = "Activity chart",
+                    style = MaterialTheme.typography.displayMedium,
+                    color = Orange
+                )
+            }
+            item {
+                ActivityChart(
+                    activityList = manager.provideActivityBear(calendar)
+                    , modifier = Modifier
+                        .padding(horizontal = 25.dp)
+                        .fillMaxWidth(),
+                    memoryColorMapOrange
+                )
+            }
+            item { Spacer(modifier = Modifier.height(10.dp)) }
+
+            item {
+                Text(
+                    text = "Speed chart",
+                    style = MaterialTheme.typography.displayMedium,
+                    color = Orange
+                )
+            }
+            item { FocusStatistics() }
+            item{
+                Column (modifier = Modifier
+                    .fillMaxSize()
+                    .padding(25.dp),
+                    verticalArrangement = Arrangement.spacedBy(5.dp)){
+                    Text(
+                        text = "Current speed:",
+                        style = MaterialTheme.typography.displaySmall,
+                        color = DarkOrange
+                    )
+                    Text(
+                        text = "Speed last month:",
+                        style = MaterialTheme.typography.displaySmall,
+                        color = DarkGray
+                    )
+                    Text(
+                        text = "Three months ago:",
+                        style = MaterialTheme.typography.displaySmall,
+                        color = DarkGray
+                    )
+                }
+            }
         }
     }
     }else {
-        Text(text = "Not ready")
+        Column (modifier = Modifier
+            .fillMaxSize(),
+            horizontalAlignment = Alignment.CenterHorizontally,
+            verticalArrangement = Arrangement.Center  ){
+            Text(
+                text = "Loading statistics", style = MaterialTheme.typography.displayMedium,
+                color = DarkGray
+            )
+        }
     }
 }
 
@@ -255,8 +341,16 @@ fun StatisticsView(lifecycleScope: LifecycleCoroutineScope) {
 fun MemoryStatistics(modifier: Modifier = Modifier) {
     PieCharts(
         data = listOf(1.0, 4.5), labels = listOf("One", "Four"), colors = listOf(
-            Orange, GreenHighlight
+            Red, GreenHighlight
         ), modifier = modifier
+    )
+}
+@Composable
+fun FocusStatistics(modifier: Modifier = Modifier) {
+    LineCharts(
+        modifier = modifier
+            .fillMaxWidth()
+            .height(200.dp)
     )
 }
 
@@ -316,7 +410,7 @@ fun ActivityChartLabel(modifier: Modifier = Modifier) {
 }
 
 @Composable
-fun ActivityChartRow(activityList: List<Int>, modifier: Modifier = Modifier) {
+fun ActivityChartRow(activityList: List<Int>, modifier: Modifier = Modifier, memoryColorMap: Map<Int, Color>) {
     Row(modifier = modifier, horizontalArrangement = Arrangement.spacedBy(3.dp)) {
         Row(
             modifier = Modifier
@@ -371,7 +465,7 @@ fun ActivityChartRow(activityList: List<Int>, modifier: Modifier = Modifier) {
 }
 
 @Composable
-fun ActivityChart(activityList: List<Int>, modifier: Modifier = Modifier) {
+fun ActivityChart(activityList: List<Int>, modifier: Modifier = Modifier, memoryColorMap: Map<Int, Color>) {
     Column(modifier = modifier, verticalArrangement = Arrangement.spacedBy(3.dp)) {
         ActivityChartLabel()
         val rowsNumber = activityList.size / 7
@@ -380,7 +474,7 @@ fun ActivityChart(activityList: List<Int>, modifier: Modifier = Modifier) {
                 activityList = activityList.subList(
                     fromIndex = i * 7,
                     toIndex = i * 7 + 7
-                )
+                ), memoryColorMap = memoryColorMap
             )
         }
     }

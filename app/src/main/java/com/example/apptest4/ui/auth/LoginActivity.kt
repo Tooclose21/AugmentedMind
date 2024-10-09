@@ -41,7 +41,7 @@ import com.example.apptest4.controllers.AuthController
 import com.example.apptest4.entity.LoginCredentials
 import com.example.apptest4.ui.theme.AppTest4Theme
 import com.example.apptest4.ui.theme.DarkGreen
-import com.example.apptest4.ui.theme.DarkGrey
+import com.example.apptest4.ui.theme.DarkGray
 import com.example.apptest4.ui.theme.LightBack
 import com.example.apptest4.ui.theme.Orange
 
@@ -145,7 +145,7 @@ class LoginActivity : ComponentActivity() {
                 Text(
                     text = "Don't have an account?",
                     style = MaterialTheme.typography.headlineLarge,
-                    color = DarkGrey
+                    color = DarkGray
                 )
 
                 Text(text = " Register",
