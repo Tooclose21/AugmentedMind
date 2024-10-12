@@ -12,9 +12,3 @@ val memoryColorMap = mapOf(
     Pair(1, GreenHighlight),
     Pair(-1, LightBack)
 )
-
-val memoryColorMapOrange = mapOf(
-    Pair(0, Gray),
-    Pair(1, OrangeHighlight),
-    Pair(-1, LightBack)
-)

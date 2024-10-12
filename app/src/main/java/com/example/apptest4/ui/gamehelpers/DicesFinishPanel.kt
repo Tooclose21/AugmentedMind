@@ -95,7 +95,7 @@ class DicesFinishPanel : ComponentActivity() {
     }
     private fun CoroutineScope.save(dicesNumber: Int, gameMode: Int, isCorrect: Boolean, onError: (String) -> Unit, onSuccess: () -> Unit) = launch {
         store.addDicesPoints("test", DicesPoints(dicesNumber = dicesNumber, mode = gameMode,
-            isCorrect = isCorrect, date = Calendar.getInstance().timeInMillis),
+            correct = isCorrect, date = Calendar.getInstance().timeInMillis),
             onSuccess, onError)
     }
 }

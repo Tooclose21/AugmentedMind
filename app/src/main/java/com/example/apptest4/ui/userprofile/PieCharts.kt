@@ -7,14 +7,17 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.unit.dp
+import com.example.apptest4.ui.theme.GreenHighlight
+import com.example.apptest4.ui.theme.Red
 import ir.ehsannarmani.compose_charts.PieChart
 import ir.ehsannarmani.compose_charts.models.Pie
 
 @Composable
-fun PieCharts(data: List<Double>, labels: List<String>, colors: List<Color>, modifier: Modifier = Modifier) {
-    var pies = data
-        .mapIndexed { index, it -> Pie(label = labels[index], data = it, color = colors[index % colors.size],
-            selectedColor = colors[index % colors.size]) }
+fun PieCharts(data: Map<String, Int>, modifier: Modifier = Modifier) {
+    val colors = mapOf(
+    Pair("Wrong", Red), Pair("Correct", GreenHighlight)
+    )
+    var pies = data.map { (k, v) -> Pie(label = k, data = v.toDouble(), color = colors[k]!!, selectedColor = colors[k]!!)}
 
     PieChart(
         modifier = modifier,
