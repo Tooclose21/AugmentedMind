@@ -8,6 +8,7 @@ import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
@@ -200,16 +201,33 @@ class RememberDices : ComponentActivity() {
                             .align(Alignment.TopCenter),
                         verticalArrangement = Arrangement.spacedBy(40.dp)
                     ) {
+                        Row(
+                            modifier = Modifier
+                                .fillMaxWidth(),
+                            horizontalArrangement = Arrangement.Center
+                        ){
                             Button(modifier = Modifier
-                                .systemBarsPadding()
-                                .padding(30.dp), onClick = {
+                                .padding(20.dp),
+                                onClick = {
                                 startActivity(
                                     Intent(
                                         this@RememberDices, ChooseGameActivity::class.java
                                     )
                                 )
                             }) {
-                                Text(fontSize = 20.sp, text = "Finish") }
+                                Text(fontSize = 40.sp, text = "Finish")
+                            }
+                            Spacer(modifier = Modifier.weight(1f))
+                            Button(modifier = Modifier
+                                .padding(20.dp),
+                                onClick = {
+                                    logic.rollDices(dicesNumber)
+                                    models = logic.assignDicesNames()
+                                    generate = true
+                            }) {
+                                Text(fontSize = 40.sp, text = "Reload")
+                            }
+                        }
 
                         Column(
                             modifier = Modifier
@@ -222,9 +240,10 @@ class RememberDices : ComponentActivity() {
                                 Text(
                                     modifier = Modifier
                                         .systemBarsPadding()
-                                        .fillMaxWidth(),
+                                        .fillMaxWidth()
+                                        .padding(10.dp),
                                     textAlign = TextAlign.Center,
-                                    fontSize = 28.sp,
+                                    fontSize = 36.sp,
                                     color = Color.White,
                                     text = trackingFailureReason?.getDescription(LocalContext.current)
                                         ?: if (childNodes.isEmpty()) {
@@ -252,10 +271,10 @@ class RememberDices : ComponentActivity() {
                         if (showAnswers) {
                             Box(
                                 modifier = Modifier
-                                    .size(300.dp)
+                                    .size(360.dp)
                                     .background(
                                         color = Color(0x80FFFFFF),
-                                        shape = RoundedCornerShape(16.dp)
+                                        shape = RoundedCornerShape(20.dp)
                                     )
                                     .padding(16.dp)
                                     .align(Alignment.CenterHorizontally),
@@ -271,9 +290,8 @@ class RememberDices : ComponentActivity() {
                                 ) {
                                     Text(
                                         text = "The sum of dots is:",
-                                        fontSize = 20.sp,
-                                        fontWeight = FontWeight.Bold,
-                                        color = Color.Black
+                                        fontSize = 42.sp,
+                                        color = Color.DarkGray
                                     )
                                     Spacer(modifier = Modifier.height(16.dp))
 
@@ -293,7 +311,7 @@ class RememberDices : ComponentActivity() {
                                             },
                                             modifier = Modifier.padding(vertical = 4.dp)
                                         ) {
-                                            Text(answer.toString())
+                                            Text(answer.toString(), fontSize = 32.sp)
                                         }
                                     }
                                 }

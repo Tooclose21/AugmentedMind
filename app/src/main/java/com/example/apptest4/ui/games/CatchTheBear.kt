@@ -227,7 +227,7 @@ class CatchTheBear : ComponentActivity() {
                                         it.putExtra("gameTime", gameTime)
                                     })
                                 }) {
-                                Text(fontSize = 20.sp, text = "Finish")
+                                Text(fontSize = 40.sp, text = "Finish")
                             }
                             Spacer(modifier = Modifier.weight(1f))
                             Text(
@@ -235,7 +235,7 @@ class CatchTheBear : ComponentActivity() {
                                     .systemBarsPadding()
                                     .padding(32.dp),
                                 textAlign = TextAlign.Right,
-                                fontSize = 28.sp,
+                                fontSize = 32.sp,
                                 color = Color.White,
                                 text = "Points: $gamePoints"
                             )
@@ -245,7 +245,7 @@ class CatchTheBear : ComponentActivity() {
                                 .systemBarsPadding()
                                 .fillMaxWidth(),
                             textAlign = TextAlign.Center,
-                            fontSize = 28.sp,
+                            fontSize = 32.sp,
                             color = Color.White,
                             text = trackingFailureReason?.getDescription(LocalContext.current)
                                 ?: if (childNodes.isEmpty()) {

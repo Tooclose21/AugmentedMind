@@ -7,8 +7,10 @@ import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
+import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.material3.Button
 import androidx.compose.material3.MaterialTheme
@@ -50,15 +52,15 @@ class DicesFinishPanel : ComponentActivity() {
                     ) {
                         if (isCorrect) {
                             Text(
-                                text = "Congrats! Your answer was correct",
-                                fontSize = 20.sp,
+                                text = "Congrats! \n Your answer was correct!",
+                                fontSize = 42.sp,
                             )
                         } else {
                             Text(
-                                text = "Not this time", fontSize = 20.sp
+                                text = "Not this time", fontSize = 42.sp
                             )
                             Text(
-                                text = "Correct answer: $correctAnswer", fontSize = 20.sp
+                                text = "Correct answer: $correctAnswer", fontSize = 32.sp
                             )
                         }
                         Button(
@@ -71,8 +73,9 @@ class DicesFinishPanel : ComponentActivity() {
                                 })
                             }, modifier = Modifier.padding(vertical = 4.dp)
                         ) {
-                            Text(text = "Play again")
+                            Text(text = "Play again", fontSize = 32.sp)
                         }
+                        Spacer(modifier = Modifier.height(20.dp))
                         Button(
                             onClick = {
                                 startActivity(
@@ -82,7 +85,7 @@ class DicesFinishPanel : ComponentActivity() {
                                 )
                             }, modifier = Modifier.padding(vertical = 4.dp)
                         ) {
-                            Text(text = "Finish")
+                            Text(text = "Finish", fontSize = 32.sp)
                         }
                     }
                     lifecycleScope.save(dicesNumber, gameMode, isCorrect, { Log.e("ERROR", it)}, {
