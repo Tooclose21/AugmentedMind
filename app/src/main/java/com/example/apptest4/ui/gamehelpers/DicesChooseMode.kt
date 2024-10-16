@@ -23,6 +23,7 @@ import androidx.compose.ui.draw.clip
 import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.unit.dp
+import androidx.compose.ui.unit.sp
 import com.example.apptest4.R
 import com.example.apptest4.ui.games.RememberDices
 import com.example.apptest4.ui.theme.AppTest4Theme
@@ -46,6 +47,7 @@ class DicesChooseMode : ComponentActivity() {
                         Text(
                             text = "Choose game mode",
                             style = MaterialTheme.typography.displayLarge,
+                            fontSize = 65.sp,
                             color = DarkGreen
                         )
                         fun startRememberDicesActivity(dicesNumber: Int, gameMode: Int) {

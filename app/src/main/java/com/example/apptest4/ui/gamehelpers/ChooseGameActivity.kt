@@ -149,7 +149,7 @@ class ChooseGameActivity : ComponentActivity() {
                         ))
                     }
             )
-            Text(text = "Roll dices", style = MaterialTheme.typography.displaySmall, color = DarkGreen,
+            Text(text = "Memory dices", style = MaterialTheme.typography.displayMedium, color = DarkGreen,
             )
             Spacer(modifier = Modifier.height(10.dp))
             ImageButton(
@@ -161,7 +161,7 @@ class ChooseGameActivity : ComponentActivity() {
                     )
                 )}
             )
-            Text(text = "Catch the bear", style = MaterialTheme.typography.displaySmall, color = Orange,
+            Text(text = "Catch the bear", style = MaterialTheme.typography.displayMedium, color = Orange,
             )
             Spacer(modifier = Modifier.weight(1f))
             Row(
@@ -170,7 +170,7 @@ class ChooseGameActivity : ComponentActivity() {
                     .padding(horizontal = 50.dp, vertical = 0.dp),
                 verticalAlignment = Alignment.CenterVertically
             ) {
-                Text(text = "Reminders", style = MaterialTheme.typography.displaySmall, color = DarkOrange)
+                Text(text = "Reminders", style = MaterialTheme.typography.displayMedium, color = DarkOrange)
                 Spacer(modifier = Modifier.weight(1f))
                 Switch(checked = reminders, onCheckedChange = {
                         reminders = it

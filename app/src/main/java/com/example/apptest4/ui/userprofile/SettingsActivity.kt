@@ -6,8 +6,10 @@ import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
+import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
+import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
@@ -60,10 +62,9 @@ fun ProfileFragment(activity: ComponentActivity) {
     Column(
         modifier = Modifier
             .fillMaxSize()
-            .padding(30.dp),
+            .padding(horizontal = 30.dp, vertical = 80.dp),
         verticalArrangement = Arrangement.spacedBy(30.dp)
     ) {
-
 
         LazyColumn(
             modifier = Modifier
@@ -85,21 +86,22 @@ fun ProfileListItem(item: ProfileItem, activity: ComponentActivity, modifier: Mo
     Row(
         modifier = modifier
             .fillMaxWidth()
-            .padding(horizontal = 10.dp, vertical = 14.dp)
+            .padding(horizontal = 10.dp, vertical =20.dp)
             .clickable { item.navigate(activity) },
             horizontalArrangement = Arrangement.spacedBy(10.dp)
 
     ) {
         Icon(
             modifier = Modifier
-                .padding(horizontal = 10.dp, vertical = 8.dp),
+                .padding(horizontal = 10.dp, vertical = 8.dp)
+                .height(50.dp),
             painter = painterResource(item.icon),
             contentDescription = item.label,
             tint = DarkGray
         )
         Text(
             text = item.label,
-            style = MaterialTheme.typography.displaySmall,
+            style = MaterialTheme.typography.displayMedium,
             color = DarkGreen
         )
     }

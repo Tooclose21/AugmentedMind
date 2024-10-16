@@ -91,10 +91,10 @@ class DicesChooseNumber : ComponentActivity() {
             ).also {
                 it.putExtra("dicesNumber", number)
             })},
-            shape = RoundedCornerShape(8.dp),
+            shape = RoundedCornerShape(10.dp),
             colors = ButtonDefaults.buttonColors(containerColor = GreenHighlight),
             modifier = Modifier
-                .size(100.dp)
+                .size(110.dp)
                 .padding(8.dp)
         ) {
             Text(
