@@ -215,7 +215,7 @@ class RememberDices : ComponentActivity() {
                                     )
                                 )
                             }) {
-                                Text(fontSize = 40.sp, text = "Finish")
+                                Text(fontSize = 40.sp, text = "Cancel")
                             }
                             Spacer(modifier = Modifier.weight(1f))
                             Button(modifier = Modifier

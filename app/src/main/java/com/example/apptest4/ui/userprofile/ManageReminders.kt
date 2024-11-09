@@ -3,6 +3,7 @@ package com.example.apptest4.ui.userprofile
 import android.content.Intent
 import android.os.Bundle
 import android.util.Log
+import android.widget.Toast
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
 import androidx.compose.foundation.background
@@ -76,6 +77,9 @@ class RemindersActivity : ComponentActivity() {
     fun ManageReminders() {
         val checkedList = remember { mutableStateListOf<Int>() }
         val options = listOf("M", "T", "W", "T", "F", "S", "S")
+        var hour by remember {
+            mutableStateOf(0)
+        }
         val timePickerState = rememberTimePickerState()
         var showTimePicker by remember {
             mutableStateOf(false)
@@ -130,9 +134,13 @@ class RemindersActivity : ComponentActivity() {
                 onClick = {
                     createNotification(
                         this@RemindersActivity,
-                        Calendar.getInstance().timeInMillis + 2 * 60 * 1000,
-                        0
+                        CalcutlateFirstNotifi(checkedList.map { it + 1 }, hour),
+                        0,
+                        checkedList.map { it + 1 },
+                        hour
                     )
+                    Toast.makeText(this@RemindersActivity, "Notifications added", Toast.LENGTH_SHORT).show()
+                    finish()
                 }) {
                 Text(text = "Set reminders", style = MaterialTheme.typography.displayMedium)
             }
@@ -142,6 +150,7 @@ class RemindersActivity : ComponentActivity() {
                 onDismissRequest = { },
                 confirmButton = {
                     Button(onClick = { showTimePicker = false
+                        hour = timePickerState.hour*60 + timePickerState.minute
                     }) {
                         Text(text = "Ok", style = MaterialTheme.typography.titleLarge)
                     }
@@ -208,6 +217,15 @@ class RemindersActivity : ComponentActivity() {
                 }
             }
         }
+    }
+    private fun CalcutlateFirstNotifi(week: List<Int>, hour:Int): Long {
+        val calendar = Calendar.getInstance()
+        while (!week.contains(calendar.get(Calendar.DAY_OF_WEEK))) {
+            calendar.add(Calendar.DATE, 1)
+        }
+        calendar.set(Calendar.HOUR, hour/60)
+        calendar.set(Calendar.MINUTE, hour%60)
+        return calendar.timeInMillis
     }
 }
 

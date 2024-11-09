@@ -8,9 +8,11 @@ import android.content.Intent
 import androidx.activity.ComponentActivity
 import com.example.apptest4.computation.notifications.NotificationsBroadcast
 
- fun createNotification(activity: ComponentActivity, time: Long, id: Int) {
+ fun createNotification(activity: Context, time: Long, id: Int, week: List<Int>, hour: Int) {
     val intent = Intent(activity.applicationContext, NotificationsBroadcast::class.java)
     intent.putExtra("NOTIFICATION_ID", id)
+    intent.putExtra("NOTIFICATION_WEEK", week.toIntArray())
+    intent.putExtra("NOTIFICATION_HOUR", hour)
 
     val pendingIntent = PendingIntent.getBroadcast(
         activity.applicationContext,

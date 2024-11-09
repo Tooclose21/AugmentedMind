@@ -14,6 +14,8 @@ import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
+import androidx.compose.material3.Button
+import androidx.compose.material3.ButtonDefaults
 import androidx.compose.material3.Icon
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.NavigationBar
@@ -45,9 +47,11 @@ import com.example.apptest4.ui.theme.AppTest4Theme
 import com.example.apptest4.ui.theme.DarkGreen
 import com.example.apptest4.ui.theme.DarkGray
 import com.example.apptest4.ui.theme.DarkOrange
+import com.example.apptest4.ui.theme.GreenHighlight
 import com.example.apptest4.ui.theme.Orange
 import com.example.apptest4.ui.theme.OrangeHighlight
 import com.example.apptest4.ui.userprofile.ProfileFragment
+import com.example.apptest4.ui.userprofile.RemindersActivity
 import com.example.apptest4.ui.userprofile.StatisticsView
 
 class ChooseGameActivity : ComponentActivity() {
@@ -164,18 +168,29 @@ class ChooseGameActivity : ComponentActivity() {
             Text(text = "Catch the bear", style = MaterialTheme.typography.displayMedium, color = Orange,
             )
             Spacer(modifier = Modifier.weight(1f))
-            Row(
-                modifier = Modifier
-                    .fillMaxWidth()
-                    .padding(horizontal = 50.dp, vertical = 0.dp),
-                verticalAlignment = Alignment.CenterVertically
-            ) {
-                Text(text = "Reminders", style = MaterialTheme.typography.displayMedium, color = DarkOrange)
-                Spacer(modifier = Modifier.weight(1f))
-                Switch(checked = reminders, onCheckedChange = {
-                        reminders = it
-                })
+            Button(colors = ButtonDefaults.buttonColors(containerColor = Orange),
+                onClick = {startActivity(
+                    Intent(
+                        this@ChooseGameActivity,
+                        RemindersActivity::class.java
+                    )
+                )
+                }) {
+                Text(text = "Set reminders", style = MaterialTheme.typography.displaySmall)
             }
+//            Row(
+//                modifier = Modifier
+//                    .fillMaxWidth()
+//                    .padding(horizontal = 50.dp, vertical = 0.dp),
+//                verticalAlignment = Alignment.CenterVertically
+//            ) {
+//                Text(text = "Reminders", style = MaterialTheme.typography.displayMedium, color = DarkOrange)
+//                Spacer(modifier = Modifier.weight(1f))
+//                Switch(checked = reminders, onCheckedChange = {
+//                        reminders = it
+//                })
+
+ //           }
         }
     }
 }
