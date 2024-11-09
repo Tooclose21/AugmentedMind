@@ -204,7 +204,7 @@ class RememberDices : ComponentActivity() {
                         Row(
                             modifier = Modifier
                                 .fillMaxWidth(),
-                            horizontalArrangement = Arrangement.Center
+                            horizontalArrangement = Arrangement.Start
                         ){
                             Button(modifier = Modifier
                                 .padding(20.dp),
@@ -217,16 +217,16 @@ class RememberDices : ComponentActivity() {
                             }) {
                                 Text(fontSize = 40.sp, text = "Cancel")
                             }
-                            Spacer(modifier = Modifier.weight(1f))
-                            Button(modifier = Modifier
-                                .padding(20.dp),
-                                onClick = {
-                                    logic.rollDices(dicesNumber)
-                                    models = logic.assignDicesNames()
-                                    generate = true
-                            }) {
-                                Text(fontSize = 40.sp, text = "Reload")
-                            }
+//                            Spacer(modifier = Modifier.weight(1f))
+//                            Button(modifier = Modifier
+//                                .padding(20.dp),
+//                                onClick = {
+//                                    logic.rollDices(dicesNumber)
+//                                    models = logic.assignDicesNames()
+//                                    generate = true
+//                            }) {
+//                                Text(fontSize = 40.sp, text = "Reload")
+//                            }
                         }
 
                         Column(

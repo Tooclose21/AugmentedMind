@@ -24,7 +24,7 @@ class NotificationsBroadcast : BroadcastReceiver() {
             .setSmallIcon(R.drawable.ic_launcher_foreground)
             .setContentTitle("Reminder")
             .setAutoCancel(false)
-            .setContentText("Test")
+            .setContentText("Hey, have you played today?")
         val manager = context.getSystemService(Context.NOTIFICATION_SERVICE) as NotificationManager
 
         if (ActivityCompat.checkSelfPermission(context, Manifest.permission.POST_NOTIFICATIONS) != PackageManager.PERMISSION_GRANTED) {

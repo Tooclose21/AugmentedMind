@@ -24,6 +24,7 @@ import androidx.compose.ui.unit.dp
 import androidx.lifecycle.lifecycleScope
 import com.example.apptest4.computation.db.FirebaseStore
 import com.example.apptest4.entity.BearPoints
+import com.example.apptest4.helpers.Session
 import com.example.apptest4.ui.games.CatchTheBear
 import com.example.apptest4.ui.theme.AppTest4Theme
 import com.example.apptest4.ui.theme.Orange
@@ -116,7 +117,7 @@ class FinishedGameActivity : ComponentActivity() {
         onSuccess: () -> Unit
     ) = launch {
         store.addBearPoints(
-            "test", BearPoints(
+            Session.getCurrentUser()!!, BearPoints(
                 score = gamePoints, timeArray = timeArray,
                 date = Calendar.getInstance().timeInMillis,
                 timeMode = gameTime

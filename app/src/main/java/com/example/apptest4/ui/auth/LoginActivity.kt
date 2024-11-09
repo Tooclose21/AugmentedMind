@@ -5,6 +5,7 @@ import android.app.NotificationManager
 import android.content.Intent
 import android.os.Build
 import android.os.Bundle
+import android.widget.Toast
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
 import androidx.compose.foundation.background
@@ -133,19 +134,19 @@ class LoginActivity : ComponentActivity() {
             Spacer(modifier = Modifier.weight(0.3f))
             Button( colors = ButtonDefaults.buttonColors(containerColor = DarkGreen),
                 onClick = {
-                startActivity(Intent(
-                    this@LoginActivity, ChooseGameActivity::class.java
-                ))
-//                onLogin(LoginCredentials(login, password), onWrongCredentials = {
-//                    Toast.makeText(this@LoginActivity, it, Toast.LENGTH_SHORT).show()
-//                }, onValidCredentials = { uid ->
-//                    startActivity(Intent(
-//                        this@LoginActivity, ChooseGameActivity::class.java
-//                    ).also {
-//                        it.putExtra("uid", uid)
-//                    })
-//                    finish()
-//                })
+//                startActivity(Intent(
+//                    this@LoginActivity, ChooseGameActivity::class.java
+//                ))
+                onLogin(LoginCredentials(login, password), onWrongCredentials = {
+                    Toast.makeText(this@LoginActivity, it, Toast.LENGTH_SHORT).show()
+                }, onValidCredentials = { uid ->
+                    startActivity(Intent(
+                        this@LoginActivity, ChooseGameActivity::class.java
+                    ).also {
+                        it.putExtra("uid", uid)
+                    })
+                    finish()
+                })
             }) {
                 Text(text = "Login", style = MaterialTheme.typography.titleLarge)
             }

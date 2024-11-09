@@ -23,6 +23,7 @@ import androidx.compose.ui.unit.sp
 import androidx.lifecycle.lifecycleScope
 import com.example.apptest4.computation.db.FirebaseStore
 import com.example.apptest4.entity.DicesPoints
+import com.example.apptest4.helpers.Session
 import com.example.apptest4.ui.games.RememberDices
 import com.example.apptest4.ui.theme.AppTest4Theme
 import kotlinx.coroutines.CoroutineScope
@@ -97,7 +98,7 @@ class DicesFinishPanel : ComponentActivity() {
         }
     }
     private fun CoroutineScope.save(dicesNumber: Int, gameMode: Int, isCorrect: Boolean, onError: (String) -> Unit, onSuccess: () -> Unit) = launch {
-        store.addDicesPoints("test", DicesPoints(dicesNumber = dicesNumber, mode = gameMode,
+        store.addDicesPoints(Session.getCurrentUser()!!, DicesPoints(dicesNumber = dicesNumber, mode = gameMode,
             correct = isCorrect, date = Calendar.getInstance().timeInMillis),
             onSuccess, onError)
     }
