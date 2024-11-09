@@ -15,9 +15,14 @@ import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.text.KeyboardOptions
+import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.filled.Visibility
+import androidx.compose.material.icons.filled.VisibilityOff
 import androidx.compose.material3.Button
 import androidx.compose.material3.ButtonDefaults
 import androidx.compose.material3.ExperimentalMaterial3Api
+import androidx.compose.material3.Icon
+import androidx.compose.material3.IconButton
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.OutlinedTextField
 import androidx.compose.material3.Scaffold
@@ -31,11 +36,13 @@ import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.rememberCoroutineScope
+import androidx.compose.runtime.saveable.rememberSaveable
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.text.input.KeyboardType
 import androidx.compose.ui.text.input.PasswordVisualTransformation
+import androidx.compose.ui.text.input.VisualTransformation
 import androidx.compose.ui.unit.dp
 import com.example.apptest4.computation.FirebaseAuthService
 import com.example.apptest4.controllers.AuthController
@@ -108,6 +115,8 @@ class RegisterActivity : ComponentActivity() {
         var repeatPassword by remember {
             mutableStateOf("")
         }
+        var passwordVisible by rememberSaveable { mutableStateOf(false) }
+        var passwordVisible1 by rememberSaveable { mutableStateOf(false) }
         Column(
             horizontalAlignment = Alignment.CenterHorizontally, modifier = Modifier.padding(10.dp)
         ) {
@@ -136,21 +145,41 @@ class RegisterActivity : ComponentActivity() {
                 modifier = Modifier.fillMaxWidth(),
                 textStyle = MaterialTheme.typography.titleLarge,
                 label = { Text(text = "Password", style = MaterialTheme.typography.titleLarge) },
-                singleLine = true,
-                visualTransformation = PasswordVisualTransformation(),
                 value = password,
+                singleLine = true,
+                visualTransformation = if (passwordVisible) VisualTransformation.None else PasswordVisualTransformation(),
                 onValueChange = { password = it },
-                keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Password)
+                keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Password),
+                trailingIcon = {
+                    val image = if (passwordVisible)
+                        Icons.Filled.Visibility
+                    else Icons.Filled.VisibilityOff
+                    val description = if (passwordVisible) "Hide password" else "Show password"
+
+                    IconButton(onClick = {passwordVisible = !passwordVisible}){
+                        Icon(imageVector  = image, description)
+                    }
+                }
             )
             OutlinedTextField(
                 modifier = Modifier.fillMaxWidth(),
                 textStyle = MaterialTheme.typography.titleLarge,
-                visualTransformation = PasswordVisualTransformation(),
                 singleLine = true,
                 label = { Text(text = "Repeat password", style = MaterialTheme.typography.titleLarge) },
                 value = repeatPassword,
+                visualTransformation = if (passwordVisible1) VisualTransformation.None else PasswordVisualTransformation(),
                 onValueChange = { repeatPassword = it },
-                keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Password)
+                keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Password),
+                trailingIcon = {
+                    val image = if (passwordVisible1)
+                        Icons.Filled.Visibility
+                    else Icons.Filled.VisibilityOff
+                    val description = if (passwordVisible1) "Hide password" else "Show password"
+
+                    IconButton(onClick = {passwordVisible1 = !passwordVisible1}){
+                        Icon(imageVector  = image, description)
+                    }
+                }
             )
             Spacer(modifier = Modifier.weight(0.3f))
             Button(colors = ButtonDefaults.buttonColors(containerColor = DarkGreen),

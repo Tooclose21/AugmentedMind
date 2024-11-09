@@ -64,7 +64,7 @@ import kotlinx.coroutines.launch
 import java.util.Calendar
 
 class CatchTheBear : ComponentActivity() {
-    private val kModelFile = "models/icebear.glb"
+    private val kModelFile = "models/icebear2.glb"
     @SuppressLint("MutableCollectionMutableState")
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
