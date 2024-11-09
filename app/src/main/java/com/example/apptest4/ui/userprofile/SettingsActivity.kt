@@ -24,9 +24,11 @@ import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.unit.dp
 import com.example.apptest4.R
 import com.example.apptest4.helpers.ProfileItem
+import com.example.apptest4.helpers.createNotification
 import com.example.apptest4.ui.theme.DarkGreen
 import com.example.apptest4.ui.theme.DarkGray
 import com.example.apptest4.ui.theme.LightBack
+import java.util.Calendar
 
 private val profileItems = listOf(
     ProfileItem(
@@ -35,7 +37,7 @@ private val profileItems = listOf(
         icon = R.drawable.baseline_help_24
     ),
     ProfileItem(
-        navigate = { },
+        navigate = { it.startActivity(Intent(it, RemindersActivity::class.java))},
         label = "Manage reminders",
         icon = R.drawable.baseline_notifications_24
     ),
@@ -86,7 +88,7 @@ fun ProfileListItem(item: ProfileItem, activity: ComponentActivity, modifier: Mo
     Row(
         modifier = modifier
             .fillMaxWidth()
-            .padding(horizontal = 10.dp, vertical =20.dp)
+            .padding(horizontal = 10.dp, vertical = 20.dp)
             .clickable { item.navigate(activity) },
             horizontalArrangement = Arrangement.spacedBy(10.dp)
 

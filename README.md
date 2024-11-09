@@ -21,4 +21,3 @@ In order to install the app clone this repository
 git clone https://github.com/Tooclose21/AugmentedMind.git
 ```
 Use Android Studio build in tools or any other tool you like to build this project.
-

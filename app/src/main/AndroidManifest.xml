@@ -1,6 +1,9 @@
 <?xml version="1.0" encoding="utf-8"?>
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools">
+    <uses-permission android:name="android.permission.POST_NOTIFICATIONS" />
+    <uses-permission android:name="android.permission.SCHEDULE_EXACT_ALARM" />
+    <uses-permission android:name="android.permission.USE_EXACT_ALARM" />
 
     <application
         android:allowBackup="true"
@@ -69,11 +72,19 @@
             android:label="@string/title_activity_finished_game"
             android:theme="@style/Theme.AppTest4" />
         <activity
+            android:name=".ui.userprofile.RemindersActivity"
+            android:exported="false"
+            android:label="@string/title_activity_finished_game"
+            android:theme="@style/Theme.AppTest4" />
+        <activity
             android:name=".ui.games.CatchTheBear"
             android:exported="false"
             android:label="@string/app_name"
             android:screenOrientation="locked"
             android:theme="@style/Theme.AppTest4" />
+        <receiver
+            android:name=".computation.notifications.NotificationsBroadcast"
+            android:enabled="true" />
     </application>
 
 </manifest>
