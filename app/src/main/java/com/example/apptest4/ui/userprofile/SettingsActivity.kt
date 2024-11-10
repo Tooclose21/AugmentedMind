@@ -25,9 +25,11 @@ import androidx.compose.ui.unit.dp
 import com.example.apptest4.R
 import com.example.apptest4.helpers.ProfileItem
 import com.example.apptest4.helpers.createNotification
+import com.example.apptest4.ui.auth.LoginActivity
 import com.example.apptest4.ui.theme.DarkGreen
 import com.example.apptest4.ui.theme.DarkGray
 import com.example.apptest4.ui.theme.LightBack
+import com.google.firebase.auth.FirebaseAuth
 import java.util.Calendar
 
 private val profileItems = listOf(
@@ -50,8 +52,8 @@ private val profileItems = listOf(
     ),
      ProfileItem(
         navigate = {
-            //Session.signOut()
-            //it.finish()
+            FirebaseAuth.getInstance().signOut()
+            it.startActivity(Intent(it, LoginActivity::class.java))
         },
         label = "Log out",
         icon = R.drawable.baseline_logout_24
